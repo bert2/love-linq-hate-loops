@@ -1,3 +1,17 @@
+Notes and examples of a workshop on LINQ I did for my co-workers.
+
+Install [LINQPad](https://www.linqpad.net/) in order to run the example files.
+
+```
+PS> choco install linqpad5
+```
+
+Checkout the branch `about-to-fall-in-love` to implement the LINQ solutions yourself.
+
+```
+PS> git checkout about-to-fall-in-love
+```
+
 ### 0. Why I hate loops
 
 Can you see what the `for` loop below does? No? Me neither. This just goes to show what ugly kind of things are possible with a `for`/`foreach` loop.
