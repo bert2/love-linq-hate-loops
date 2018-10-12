@@ -1,9 +1,8 @@
-0. Why I hate loops
-===================
+### 0. Why I hate loops
 
 Can you see what the `for` loop below does? No? Me neither. This just goes to show what ugly kind of things are possible with a `for`/`foreach` loop.
 
-```
+```C#
 var a = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 var x = 0;
@@ -25,8 +24,7 @@ a.Dump();
 
 Of course, it's also possible to write clean code using `for` loops, as well it is possible to write dirty code using LINQ. However, one of the two promotes abstraction, modularization, and immutability more than the other. Guess which one I'm talking about.
 
-1. The only acceptable `for` loop
-=================================
+### 1. The only acceptable `for` loop
 
 The only acceptable `for` loop is the one that has only one statement in it's body and does not need curly braces. In fact it should be enforced that loops are defined without curly braces to make sure they always have single-statement bodies.
 
@@ -34,7 +32,7 @@ Make the loop body a method in case it needs more statements. All dependencies s
 
 Still a for loop should only be used when the performance gain due to in-place editing of collections really is needed.
 
-```
+```C#
 void Main() {
     var foos = new[] { new Foo(), null, new Foo() };
     EnsureAllInitialized(foos);
@@ -49,14 +47,13 @@ void EnsureAllInitialized(Foo[] foos) {
 class Foo { }
 ```
 
-2. The only acceptable `foreach` loop
-=====================================
+### 2. The only acceptable `foreach` loop
 
 The only acceptable `foreach` loop is the one being used to implement an extension method on `IEnumerable<T>` that takes an action with side-effects and executes it against each element. 
 
 This extension method can be appended to the end of your LINQ operator chain as fluently as any other LINQ operator.
 
-```
+```C#
 void Main() {
     var tokens = new[] { "Hello", ",", " ", "world", "!" };
     tokens.ForEach(Console.Write);
