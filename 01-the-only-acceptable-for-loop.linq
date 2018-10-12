@@ -2,7 +2,7 @@
 
 /* The only acceptable for loop is the one that has only one statement in it's
    body and does not need curly braces. In fact it should be enforced that
-   for loops are defined without curly braces to make sure they always have
+   loops are defined without curly braces to make sure they always have
    single-statement bodies.
    
    Make the loop body a method in case it needs more statements. All dependencies
@@ -12,7 +12,7 @@
    editing of collections really is needed. */
 
 void Main() {
-    var foos = new[] {new Foo(), null, new Foo()};
+    var foos = new[] { new Foo(), null, new Foo() };
     EnsureAllInitialized(foos);
     foos.Dump();
 }

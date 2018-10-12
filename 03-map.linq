@@ -1,13 +1,15 @@
 <Query Kind="Program" />
 
+/* This is your bread... */
+
 void Main() {
-    var input = new[] {"1", "2", "3"};
+    var input = new[] { "1", "2", "3" };
     
-    var nums1 = MapWithLoop(input);
-    nums1.Dump();
+    var result1 = MapWithLoop(input);
+    result1.Dump();
     
-    var nums2 = MapWithLinq(input);
-    nums2.Dump();
+    var result2 = MapWithLinq(input);
+    result2.Dump();
 }
 
 List<int> MapWithLoop(string[] input) {
@@ -18,3 +20,6 @@ List<int> MapWithLoop(string[] input) {
     
     return result;
 }
+
+IEnumerable<int> MapWithLinq(string[] input) =>
+    throw new NotImplementedException();

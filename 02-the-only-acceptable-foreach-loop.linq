@@ -8,7 +8,7 @@
    operator chain as fluently as any other LINQ operator. */
 
 void Main() {
-    var tokens = new[] {"Hello", ",", " ", "world", "!"};
+    var tokens = new[] { "Hello", ",", " ", "world", "!" };
     tokens.ForEach(Console.Write);
 }
 
