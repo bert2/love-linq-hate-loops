@@ -1,4 +1,4 @@
-### -1. Introduction & instructions
+### -1. Introduction
 
 LINQ has been around in C# for quite some time now. Still many programmers prefer explicit looping with `for` and `foreach` in situations that also could have been solved using LINQ operators.
 
