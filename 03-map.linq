@@ -17,5 +17,5 @@ List<int> MapWithLoop(string[] input) {
     return result;
 }
 
-IEnumerable<int> MapWithLinq(string[] input) => 
-    input.Select(int.Parse);
+IEnumerable<int> MapWithLinq(string[] input) => input
+    .Select(int.Parse);

@@ -19,5 +19,5 @@ List<int> FilterWithLoop(int[] input) {
     return result;
 }
 
-IEnumerable<int> FilterWithLinq(int[] input) => 
-    input.Where(x => x % 2 == 0);
+IEnumerable<int> FilterWithLinq(int[] input) => input
+    .Where(x => x % 2 == 0);

@@ -13,7 +13,7 @@ void Main() {
     var input = new[] { 
         new[] { 1, 2 }, 
         new[] { 10, 20 },
-        new[] { 100, 200 },
+        new[] { 100, 200 }
     };
 
     FlattenWithLoop(input).Dump();
@@ -31,5 +31,5 @@ List<int> FlattenWithLoop(int[][] input) {
     return result;
 }
 
-IEnumerable<int> FlattenWithLinq(int[][] input) => 
-    input.SelectMany(items => items);
+IEnumerable<int> FlattenWithLinq(int[][] input) => input
+    .SelectMany(items => items);
