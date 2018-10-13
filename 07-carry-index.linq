@@ -3,6 +3,9 @@
 /* The previous examples were all fine and dandy, but this is were programmers
    used to looping begin to object.
    
+   First, make sure you understand how the indices of the TestResults are 
+   paired with each element of the inner collections by running the example.
+   
    Carrying the index from the outer loop into the inner loop's body is
    straightforward and doesn't look much different than any other nested loop.
    In LINQ however, this may not come as easy at first, because you explicitely
@@ -16,7 +19,7 @@
    the following operator clean and tidy, making it easier to reason about.
    
    Don't try and boost your operator's scope by nesting lambdas. This is 
-   basically the same way the looping solution works and we want to be better 
+   basically the same way the looping solution works and we want to do better 
    than that. */
 
 void Main() {
@@ -34,7 +37,7 @@ void Main() {
 List<string> CarryIndexWithLoop(TestResult[] input) {
     var result = new List<string>();
 
-    for (int place = 0; place < input.Length; place++) {
+    for (var place = 0; place < input.Length; place++) {
         foreach (var drug in input[place].Drugs)
             result.Add(MakeReportLine(place, drug));
     }
