@@ -26,9 +26,8 @@ int CaptureIndexWithLoop(int[] input) {
     var result = 0;
     var lastIndex = input.Length - 1;
     
-    for (var i = 0; i < input.Length; i++) {
+    for (var i = 0; i < input.Length; i++)
         result += MulByNthPowerOfTwo(input[i], lastIndex - i);
-    }
 
     return result;
 }
