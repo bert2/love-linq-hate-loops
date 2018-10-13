@@ -23,5 +23,4 @@ List<int> FilterWithLoop(int[] input) {
     return result;
 }
 
-IEnumerable<int> FilterWithLinq(int[] input) =>
-    throw new NotImplementedException();
+IEnumerable<int> FilterWithLinq(int[] input) => input.Where(x => x % 2 == 0);

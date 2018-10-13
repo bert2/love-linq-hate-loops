@@ -6,11 +6,11 @@
    LINQ operators usually have overloads that feed the element along with its 
    index to your Func if you need them.
    
-   The example below maps the bits of a binary number to their decimal
-   representations. Using the index of the bits this is easy enough, but
-   requires us to iterate over them backwards. Of course this can be done with 
-   a for loop (after fixing this damn off-by-one error... again), but see how
-   natural you can express this reversal with LINQ. */
+   The example below converts a binary number to decimal. Using the index of 
+   the bits this is easy enough, but we have to keep in mind that the least 
+   significant bit is the _last_ element of the input. Of course we can work
+   out the correct process with a for loop (after fixing this damn off-by-one 
+   error...), but see how natural you can express this reversal with LINQ. */
 
 void Main() {
     var input = new[] { 1, 1, 0, 1 };
@@ -22,15 +22,20 @@ void Main() {
     result2.Dump();
 }
 
-List<int> CaptureIndexWithLoop(int[] input) {
-    var result = new List<int>();
-
-    for (var i = input.Length - 1; i >= 0; i--) {
-        result.Add(input[i] << i);
+int CaptureIndexWithLoop(int[] input) {
+    var result = 0;
+    var lastIndex = input.Length - 1;
+    
+    for (var i = 0; i < input.Length; i++) {
+        result += MulByNthPowerOfTwo(input[i], lastIndex - i);
     }
 
     return result;
 }
 
-IEnumerable<int> CaptureIndexWithLinq(int[] input) =>
-    throw new NotImplementedException();
+int CaptureIndexWithLinq(int[] input) => input
+    .Reverse()
+    .Select(MulByNthPowerOfTwo)
+    .Sum();
+
+int MulByNthPowerOfTwo(int x, int n) => x << n;

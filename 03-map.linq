@@ -21,5 +21,4 @@ List<int> MapWithLoop(string[] input) {
     return result;
 }
 
-IEnumerable<int> MapWithLinq(string[] input) =>
-    throw new NotImplementedException();
+IEnumerable<int> MapWithLinq(string[] input) => input.Select(int.Parse);
