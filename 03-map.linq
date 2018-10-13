@@ -1,6 +1,6 @@
 <Query Kind="Program" />
 
-/* Select() is your bread... */
+/* `Select()` is your bread... */
 
 void Main() {
     var input = new[] { "1", "2", "3" };

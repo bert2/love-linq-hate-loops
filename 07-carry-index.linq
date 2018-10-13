@@ -3,13 +3,13 @@
 /* The previous examples were all fine and dandy, but this is were programmers
    used to looping begin to object.
    
-   First, make sure you understand how the indices of the TestResults are 
-   paired with each element of the inner collections by running the example.
+   First, make sure you understand how the indices of the TestResults are paired 
+   with each element of the inner collections by running the example.
    
    Carrying the index from the outer loop into the inner loop's body is
-   straightforward and doesn't look much different than any other nested loop.
-   In LINQ however, this may not come as easy at first, because you explicitely
-   have to "push" the index into the next operator.
+   straightforward and doesn't look much different than any other nested loop. In
+   LINQ however, this may not come as easy at first, because you explicitely have
+   to "push" the index into the next operator.
    
    But what seems like a nuisance actually makes your life easier. Implicitely 
    being able to use variables from outer scopes also increases the amount of 

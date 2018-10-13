@@ -1,6 +1,6 @@
 <Query Kind="Program" />
 
-/* ...and Where() is your butter. */
+/* ...and `Where()` is your butter. */
 
 void Main() {
     var input = new[] { 1, 2, 3, 4 };

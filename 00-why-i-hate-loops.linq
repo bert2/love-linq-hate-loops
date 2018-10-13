@@ -1,14 +1,12 @@
 <Query Kind="Statements" />
 
-/* Can you see what the for loop below does? No? Me neither. 
-   This just goes to show what ugly kind of things are 
-   possible with a for/foreach loop.
+/* Can you see what the for loop below does? No? Me neither. This just goes to show
+   what ugly kind of things are possible with a `for`/`foreach` loop.
    
-   Of course, it's also possible to write clean code using 
-   for loops, as well it is possible to write dirty code 
-   using LINQ. However, one of the two promotes abstraction,
-   modularization, and immutability more than the other.
-   Guess which one I'm talking about. */
+   Of course, it's also possible to write clean code using `for` loops, as well it 
+   is possible to write dirty code using LINQ. However, one of the two promotes 
+   abstraction, modularization, and immutability more than the other. Guess which 
+   one I'm talking about. */
 
 var a = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 

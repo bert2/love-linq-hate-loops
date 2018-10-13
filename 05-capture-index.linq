@@ -1,15 +1,15 @@
 <Query Kind="Program" />
 
-/* Sometimes you need the element index in your mapping function. Sounds like
-   the perfect job for a classic for loop, you think? Not on my watch! 
+/* Sometimes you need the element index in your mapping function. Sounds like the
+   perfect job for a classic `for` loop, you think? Not on my watch! 
    
    LINQ operators usually have overloads that feed the element along with its 
    index to your Func if you need them.
    
-   The example below converts a binary number to decimal. Using the index of 
-   the bits this is easy enough, but we have to keep in mind that the least 
-   significant bit is the _last_ element of the input. Of course we can work
-   out the correct process with a for loop (after fixing this damn off-by-one 
+   The example below converts a binary number to decimal. Using the index of the 
+   bits this is easy enough, but we have to keep in mind that the least 
+   significant bit is the _last_ element of the input. Of course we can work out 
+   the correct process with a for loop (after fixing this damn off-by-one 
    error...), but see how natural you can express this reversal with LINQ. */
 
 void Main() {

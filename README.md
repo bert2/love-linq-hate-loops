@@ -201,7 +201,7 @@ IEnumerable<int> FlattenWithLinq(int[][] input) => input
     .SelectMany(items => items);
 ```
 
-Note how this scales when applied to lists of lists of lists of ... Loops will need even more _nesting_, while in LINQ you keep _chaining_ `SelectMany()` until you reach the desired depth.
+Note how this scales when applied to lists of lists of lists of... With loops you will need even more _nesting_, whereas with LINQ you keep _chaining_ `SelectMany()` until you reach the desired depth.
 
 ### 7. Carry index
 
