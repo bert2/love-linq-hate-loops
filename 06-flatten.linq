@@ -2,11 +2,11 @@
 
 /* Flattening a list of lists is a fairly common operation. In
    loop land this is done with nesting. In LINQtopia however,
-   it's just a call to SelectMany<T>(). 
+   it's just a call to SelectMany(). 
    
    Note how this scales when applied to lists of lists of lists
    of ... Loops will need even more _nesting_, while in LINQ you
-   keep _chaining_ SelectMany<T>() until you reach the desired
+   keep _chaining_ SelectMany() until you reach the desired
    depth. */
 
 void Main() {
