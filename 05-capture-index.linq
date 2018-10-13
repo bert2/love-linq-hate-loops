@@ -23,14 +23,14 @@ int CaptureIndexWithLoop(int[] input) {
     var lastIndex = input.Length - 1;
     
     for (var i = 0; i < input.Length; i++)
-        result += MulByNthPowerOfTwo(input[i], lastIndex - i);
+        result += MulNthPowOf2(input[i], lastIndex - i);
 
     return result;
 }
 
 int CaptureIndexWithLinq(int[] input) => input
     .Reverse()
-    .Select(MulByNthPowerOfTwo)
+    .Select(MulNthPowOf2)
     .Sum();
 
-int MulByNthPowerOfTwo(int x, int n) => x << n;
+int MulNthPowOf2(int x, int n) => x << n;
