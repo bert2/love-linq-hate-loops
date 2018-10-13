@@ -16,11 +16,8 @@ void Main() {
         new[] { 100, 200 },
     };
 
-    var result1 = FlattenWithLoop(input);
-    result1.Dump();
-
-    var result2 = FlattenWithLinq(input);
-    result2.Dump();
+    FlattenWithLoop(input).Dump();
+    FlattenWithLinq(input).Dump();
 }
 
 List<int> FlattenWithLoop(int[][] input) {

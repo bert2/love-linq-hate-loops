@@ -14,12 +14,8 @@
 
 void Main() {
     var input = new[] { 1, 1, 0, 1 };
-
-    var result1 = CaptureIndexWithLoop(input);
-    result1.Dump();
-
-    var result2 = CaptureIndexWithLinq(input);
-    result2.Dump();
+    CaptureIndexWithLoop(input).Dump();
+    CaptureIndexWithLinq(input).Dump();
 }
 
 int CaptureIndexWithLoop(int[] input) {

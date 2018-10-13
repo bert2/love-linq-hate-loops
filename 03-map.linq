@@ -4,12 +4,8 @@
 
 void Main() {
     var input = new[] { "1", "2", "3" };
-    
-    var result1 = MapWithLoop(input);
-    result1.Dump();
-    
-    var result2 = MapWithLinq(input);
-    result2.Dump();
+    MapWithLoop(input).Dump();
+    MapWithLinq(input).Dump();
 }
 
 List<int> MapWithLoop(string[] input) {

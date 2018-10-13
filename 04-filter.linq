@@ -4,12 +4,8 @@
 
 void Main() {
     var input = new[] { 1, 2, 3, 4 };
-
-    var result1 = FilterWithLoop(input);
-    result1.Dump();
-
-    var result2 = FilterWithLinq(input);
-    result2.Dump();
+    FilterWithLoop(input).Dump();
+    FilterWithLinq(input).Dump();
 }
 
 List<int> FilterWithLoop(int[] input) {
