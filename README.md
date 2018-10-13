@@ -4,7 +4,7 @@ LINQ has been around in C# for quite some time now. Still many programmers prefe
 
 I claim that to every problem that seemingly requires loops there is a LINQ solution which is cleaner. As a matter of fact, I believe that loops should be avoided at all costs and only be used in very rare special cases.
 
-The following examples show LINQ solutions to common looping problems while pointing out the problems of loops.
+The following examples show LINQ solutions to common looping problems while pointing out the issues of loops.
 
 Install [LINQPad](https://www.linqpad.net/) in order to run the example files.
 
