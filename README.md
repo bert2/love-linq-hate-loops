@@ -44,7 +44,7 @@ a.Dump();
 
 Of course, it's also possible to write clean code using `for` loops, as well it is possible to write dirty code using LINQ. However, one of the two promotes abstraction, modularization, and immutability more than the other. Guess which one I'm talking about.
 
-Have you ever considered the level of abstraction loops offer? It's actually astonishingly low. In essence they are just syntactic sugar for a jump and a branch instruction, which both wrap a couple more instructions. Sure, it's efficient. But so is assembler.
+Have you ever considered the level of abstraction loops offer? It's actually astonishingly low. In essence they are just syntactic sugar for a jump and a branch instruction which both wrap a couple more instructions. Sure, it's efficient. But so is assembly language.
 
 ### 1. The only acceptable `for` loop
 

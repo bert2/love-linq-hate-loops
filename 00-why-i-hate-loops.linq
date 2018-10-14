@@ -10,8 +10,8 @@
    
    Have you ever considered the level of abstraction loops offer? It's actually 
    astonishingly low. In essence they are just syntactic sugar for a jump and a 
-   branch instruction, which both wrap a couple more instructions. Sure, it's 
-   efficient. But so is assembler. */
+   branch instruction which both wrap a couple more instructions. Sure, it's 
+   efficient. But so is assembly language. */
 
 var a = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
