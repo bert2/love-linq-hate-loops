@@ -211,6 +211,18 @@ The previous examples were all fine and dandy, but this is were programmers used
 
 First, make sure you understand how the indices of the `TestResult`s are paired with each element of the inner collections by running the example.
 
+> ```
+> +---------------------------+
+> |Place #2 used amphetamines.|
+> +---------------------------+
+> |Place #2 used steroids.    |
+> +---------------------------+
+> |Place #3 used steroids.    |
+> +---------------------------+
+>
+> ...
+> ```
+
 ```C#
 void Main() {
     var input = new[] {
