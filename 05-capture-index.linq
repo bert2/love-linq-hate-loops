@@ -9,7 +9,7 @@
    The example below converts a binary number to decimal. Using the index of the 
    bits this is easy enough, but we have to keep in mind that the least 
    significant bit is the _last_ element of the input. Of course we can work out 
-   the correct process with a for loop (after fixing this damn off-by-one 
+   the correct process with a `for` loop (after fixing this damn off-by-one 
    error...), but see how natural you can express this reversal with LINQ. */
 
 void Main() {
