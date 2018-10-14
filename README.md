@@ -271,7 +271,7 @@ But what seems like a nuisance actually makes your life easier. Implicitely bein
 
 Don't try and boost your operator's scope by nesting lambdas. This is basically the same way the looping solution works and we want to do better than that.
 
-### Join
+### Cross join
 
 When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join you are looking at?
 
@@ -279,7 +279,7 @@ When done with loops it's not obvious. Often a develooper (sorry) will "invent" 
 
 Always figure out what kind of join your code should perform _before_ you start coding. Then express this operation in abstract terms (cross, inner, left, right, full). Those are concepts that your readers can google if they don't know them.
 
-The simplest kind of join is the cross join (a.k.a. cartesian product): everything is paired with everthing. In LINQ it's just a call to `SelectMany()`. */
+The simplest kind of join is the cross join (a.k.a. cartesian product): everything is paired with everthing. In LINQ it's just a call to our old friend `SelectMany()`.
 
 ```C#
 void Main() {

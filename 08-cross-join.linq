@@ -15,8 +15,8 @@
    don't know them.
    
    The simplest kind of join is the cross join (a.k.a. cartesian product):
-   everything is paired with everthing. In LINQ it's just a call to 
-   `SelectMany()`. */
+   everything is paired with everthing. In LINQ it's just a call to our old 
+   friend `SelectMany()`. */
 
 void Main() {
     var input1 = new[] { 'A', 'B', 'C' };
