@@ -46,8 +46,9 @@ List<string> CarryIndexWithLoop(TestResult[] input) {
 
 IEnumerable<string> CarryIndexWithLinq(TestResult[] input) => input
     .Select((testResult, place) => (testResult, place))
-    .SelectMany(x => x.testResult.Drugs, (x, drug) => (x.place, drug))
-    .Select(x => MakeReportLine(x.place, x.drug));
+    .SelectMany(
+        x => x.testResult.Drugs, 
+        (x, drug) => MakeReportLine(x.place, drug));
 
 IEnumerable<string> CarryIndexWithDirtyLinq(TestResult[] input) => input
     .SelectMany((testResult, place) => testResult

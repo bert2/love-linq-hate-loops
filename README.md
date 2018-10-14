@@ -246,8 +246,9 @@ List<string> CarryIndexWithLoop(TestResult[] input) {
 
 IEnumerable<string> CarryIndexWithLinq(TestResult[] input) => input
     .Select((testResult, place) => (testResult, place))
-    .SelectMany(x => x.testResult.Drugs, (x, drug) => (x.place, drug))
-    .Select(x => MakeReportLine(x.place, x.drug));
+    .SelectMany(
+        x => x.testResult.Drugs, 
+        (x, drug) => MakeReportLine(x.place, drug));
 
 IEnumerable<string> CarryIndexWithDirtyLinq(TestResult[] input) => input
     .SelectMany((testResult, place) => testResult
@@ -317,7 +318,7 @@ void Main() {
     };
     var input2 = new List<Bar> { 
         Bar.New(1, 100), Bar.New(2, 200), Bar.New(2, 201), Bar.New(4, 300) 
-     };
+    };
     InnerJoinWithLoop(input1, input2).Dump();
     InnerJoinWithLinq(input1, input2).Dump();
 }
