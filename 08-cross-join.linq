@@ -1,7 +1,7 @@
 <Query Kind="Program" />
 
 /* When you see nested loops working away on two collections, chances are they 
-   are both being joined somehow. The question is: what kind of join you are 
+   are both being joined somehow. The question is: what kind of join are you
    looking at?
    
    When done with loops it's not obvious. Often a develooper (sorry) will 

@@ -270,7 +270,7 @@ Don't try and boost your operator's scope by nesting lambdas. This is basically 
 
 ### Cross join
 
-When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join you are looking at?
+When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join are you looking at?
 
 When done with loops it's not obvious. Often a develooper (sorry) will "invent" his or her own logic that looks like someone was trying to build the death star. This kind of DIY joining does nothing but obfuscate intent and makes your reviewer question your mental stability.
 
