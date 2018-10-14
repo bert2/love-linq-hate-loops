@@ -259,8 +259,7 @@ class TestResult {
     public string[] Drugs { get; set; }
 }
 
-string MakeReportLine(int place, string drug) => 
-    $"Place #{place + 1} used {drug}.";
+string MakeReportLine(int place, string drug) => $"Place #{place + 1} used {drug}.";
 ```
 
 Carrying the index from the outer loop into the inner loop's body is straightforward and doesn't look much different than any other nested loop. In LINQ however, this may not come as easy at first, because you explicitely have to "push" the index into the next operator.

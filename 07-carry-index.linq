@@ -59,5 +59,4 @@ class TestResult {
     public string[] Drugs { get; set; }
 }
 
-string MakeReportLine(int place, string drug) => 
-    $"Place #{place + 1} used {drug}.";
+string MakeReportLine(int place, string drug) => $"Place #{place + 1} used {drug}.";
