@@ -20,7 +20,7 @@ void Main() {
     };
     var input2 = new List<Bar> { 
         Bar.New(1, 100), Bar.New(2, 200), Bar.New(2, 201), Bar.New(4, 300) 
-     };
+    };
     InnerJoinWithLoop(input1, input2).Dump();
     InnerJoinWithLinq(input1, input2).Dump();
 }
