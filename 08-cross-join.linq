@@ -28,10 +28,9 @@ void Main() {
 List<string> CrossJoinWithLoop(char[] input1, int[] input2) {
     var result = new List<string>();
 
-    foreach (var item1 in input1) {
+    foreach (var item1 in input1)
         foreach (var item2 in input2)
             result.Add($"{item1}{item2}");
-    }
     
     return result;
 }

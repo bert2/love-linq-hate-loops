@@ -127,10 +127,9 @@ void Main() {
 List<int> FilterWithLoop(int[] input) {
     var result = new List<int>();
 
-    foreach (var item in input) {
+    foreach (var item in input)
         if (item % 2 == 0)
             result.Add(item);
-    }
 
     return result;
 }
@@ -191,10 +190,9 @@ void Main() {
 List<int> FlattenWithLoop(int[][] input) {
     var result = new List<int>();
 
-    foreach (var items in input) {
+    foreach (var items in input)
         foreach (var item in items)
             result.Add(item);
-    }
 
     return result;
 }
@@ -239,10 +237,9 @@ void Main() {
 List<string> CarryIndexWithLoop(TestResult[] input) {
     var result = new List<string>();
 
-    for (var place = 0; place < input.Length; place++) {
+    for (var place = 0; place < input.Length; place++)
         foreach (var drug in input[place].Drugs)
             result.Add(MakeReportLine(place, drug));
-    }
 
     return result;
 }
@@ -292,10 +289,9 @@ void Main() {
 List<string> CrossJoinWithLoop(char[] input1, int[] input2) {
     var result = new List<string>();
 
-    foreach (var item1 in input1) {
+    foreach (var item1 in input1)
         foreach (var item2 in input2)
             result.Add($"{item1}{item2}");
-    }
     
     return result;
 }

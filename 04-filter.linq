@@ -11,10 +11,9 @@ void Main() {
 List<int> FilterWithLoop(int[] input) {
     var result = new List<int>();
 
-    foreach (var item in input) {
+    foreach (var item in input)
         if (item % 2 == 0)
             result.Add(item);
-    }
 
     return result;
 }

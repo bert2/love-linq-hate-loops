@@ -21,10 +21,9 @@ void Main() {
 List<int> FlattenWithLoop(int[][] input) {
     var result = new List<int>();
 
-    foreach (var items in input) {
+    foreach (var items in input)
         foreach (var item in items)
             result.Add(item);
-    }
 
     return result;
 }
