@@ -258,3 +258,36 @@ Carrying the index from the outer loop into the inner loop's body is straightfor
 But what seems like a nuisance actually makes your life easier. Implicitely being able to use variables from outer scopes also increases the amount of information readers of your code have to keep track of. By explicitely declaring what goes into the next operator, you are not only announcing what the important parts of the input data are. You are also keeping the scope of the following operator clean and tidy, making it easier to reason about.
 
 Don't try and boost your operator's scope by nesting lambdas. This is basically the same way the looping solution works and we want to do better than that.
+
+### Join
+
+When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join you are looking at?
+
+When done with loops it's not obvious. Often a develooper (sorry) will "invent" his or her own logic that looks like someone was trying to build the death star. This kind of DIY joining does nothing but obfuscate intent and makes your reviewer question your mental stability.
+
+Always figure out what kind of join your code should perform _before_ you start coding. Then express this operation in abstract terms (cross, inner, left, right, full). Those are concepts that your readers can google if they don't know them.
+
+The simplest kind of join is the cross join (a.k.a. cartesian product): everything is paired with everthing. In LINQ it's just a call to `SelectMany()`. */
+
+```C#
+void Main() {
+    var input1 = new[] { 'A', 'B', 'C' };
+    var input2 = new[] { 1, 2, 3 };
+    CrossJoinWithLoop(input1, input2).Dump();
+    CrossJoinWithLinq(input1, input2).Dump();
+}
+
+List<string> CrossJoinWithLoop(char[] input1, int[] input2) {
+    var result = new List<string>();
+
+    foreach (var item1 in input1) {
+        foreach (var item2 in input2)
+            result.Add($"{item1}{item2}");
+    }
+    
+    return result;
+}
+
+IEnumerable<string> CrossJoinWithLinq(char[] input1, int[] input2) => input1
+    .SelectMany(_ => input2, (x1, x2) => $"{x1}{x2}");
+```
