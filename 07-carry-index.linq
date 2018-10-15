@@ -21,7 +21,8 @@
    the important parts of the input data are. You are also keeping the scope of
    the following operator clean and tidy, making it easier to reason about.
    
-   Don't try and boost your operator's scope by nesting lambdas. This is 
+   Don't try and boost your operator's scope by nesting lambdas like 
+   `CarryIndexWithDirtyLinq()` does. This is 
    basically the same way the looping solution works and we want to do better 
    than that. */
 
