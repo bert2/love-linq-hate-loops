@@ -3,8 +3,11 @@
 /* The previous examples were all fine and dandy, but this is were programmers
    used to looping begin to object.
    
-   First, make sure you understand how the indices of the TestResults are paired 
-   with each element of the inner collections by running the example.
+   The example pairs each element index (the place of a runner in a competition)
+   with the elements of a nested collection (the drugs the runner used). We are 
+   _carrying_ the indeces down into a deeper level, so to speak. It's probably 
+   easier to understand if you just run the example right now and have a look at 
+   the output.
    
    Carrying the index from the outer loop into the inner loop's body is
    straightforward and doesn't look much different than any other nested loop. In

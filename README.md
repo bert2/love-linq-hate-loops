@@ -207,7 +207,7 @@ Note how this scales when applied to lists of lists of lists of... With loops yo
 
 The previous examples were all fine and dandy, but this is were programmers used to looping begin to object.
 
-First, make sure you understand how the indices of the `TestResult`s are paired with each element of the inner collections by running the example.
+The example pairs each element index (the place of a runner in a competition) with the elements of a nested collection (the drugs the runner used). We are _carrying_ the indeces down into a deeper level, so to speak. It's probably easier to understand if you just run the example right now and have a look at the output.
 
 > ```
 > +---------------------------+
