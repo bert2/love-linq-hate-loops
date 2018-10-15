@@ -266,6 +266,8 @@ Carrying the index from the outer loop into the inner loop's body is straightfor
 
 But what seems like a nuisance actually makes your life easier. Implicitely being able to use variables from outer scopes also increases the amount of information readers of your code have to keep track of. By explicitely declaring what goes into the next operator, you are not only announcing what the important parts of the input data are. You are also keeping the scope of the following operator clean and tidy, making it easier to reason about.
 
+Also consider how both solutions scale if we for instance wanted to only list the drugs of the first and second places in our report: in the loop solution we'd introduce another level of nesting (`if (place > 3)`) inbetween the two loops; in the LINQ solution we'd add a filter (`Where(x => x.place > 3)`) to our chain without any increase in the nesting level.
+
 Don't try and boost your operator's scope by nesting lambdas like `CarryIndexWithDirtyLinq()` does. This is basically the same way the looping solution works and we want to do better than that.
 
 ### Cross join
