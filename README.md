@@ -489,7 +489,9 @@ IEnumerable<string> FullJoinWithLinq(List<Foo> input1, List<Bar> input2) {
 
 So why did I spent so much time showing how to do the different kinds of joins with LINQ? The answer is simple: because that's what developers are doing more often than they might realize.
 
-The problem is, in the real world the requirements are not as "synthetic" as in the previous examples. No requirements engineer will come to you and request a plain inner join of `Foo`s and `Bar`s. It's more likely that he or she says you should "marry" every second `Foo` with all the `Bar`s that "belong to it". _But_ only the `Bar`s that are whole numbers!
+The problem is, in the real world requirements are not as "synthetic" as in the previous examples. Reality is often complex and it's hard to identify and abstract patterns when they are riddled with special cases and exceptions.
+
+For instance, no requirements engineer will come to you and request a plain inner join of `Foo`s and `Bar`s. It's more likely that he or she says you should "marry" every second `Foo` with all the `Bar`s that "belong to it". _But_ only the `Bar`s that are whole numbers!
 
 "Easy enough", might Sir Loopalot think and begin hacking a nested loop solution right away. And after sprinkling a couple of `if`s here and there it even works! Done.
 
