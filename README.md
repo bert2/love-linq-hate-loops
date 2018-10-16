@@ -680,3 +680,7 @@ public static class EnumerableExtensions {
         => source.Select(x => { action(x); return x; });
 }
 ```
+
+## Closing thoughts
+
+I hope that I could demonstrate how cleanly even complex logic can be organized with LINQ. I also hope you now share some of my obsessive hatred of loops :)
