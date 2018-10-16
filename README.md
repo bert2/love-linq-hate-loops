@@ -531,7 +531,7 @@ IEnumerable<string> ConditionalJoinWithLinq(List<Foo> input1, List<Bar> input2) 
     .Select(x => $"{x.f.Value}{x.b.Value}");
 ```
 
-## Reduce
+## 14. Reduce
 
 Now we get to the mother of all LINQ operators. Quite Literally, because this operator could in fact be used to implement most of the operators I've shown you know so far. 
 
@@ -559,7 +559,7 @@ int ReduceWithLinq(int[] input) => input
     .Aggregate(0, (sum, next) => sum + next);
 ```
 
-## Moving window
+## 15. Moving window
 
 What if operating on list elements independently is not sufficient? What if the element's neighbors need to be considered as well? 
 
@@ -613,7 +613,7 @@ public static class EnumerableExtensions {
 }
 ```
 
-## Modularization
+## 16. Modularization
 
 What makes LINQ so versatile are the ways a LINQ chain can be modularized.
 
@@ -661,7 +661,7 @@ public static class EnumerableExtensions {
 bool BarIsInteger((Foo, Bar b) pair) => pair.b.Value == Math.Floor(pair.b.Value);
 ```
 
-## Tap
+## 17. Tap
 
 The tap operator is helpful when you have to hook side effects lazily into your operator chain.
 
