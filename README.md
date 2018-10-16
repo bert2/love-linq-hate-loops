@@ -353,3 +353,134 @@ class Bar {
     public int Value { get; set; }
 }
 ```
+
+### Left join
+
+The left join is a bit more tricky to do with LINQ, because there is no inherent support for it.
+   
+Luckily we can use `GroupJoin()` to get an empty list for all the items from the left side that were not present in the right side. Calling `DefaultIfEmpty()` on the joined elements will return the joined items or the singleton list created from `default(Bar)` in case it was empty.
+
+```C#
+void Main() {
+    var input1 = new List<Foo> { 
+        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+    };
+    var input2 = new List<Bar> { 
+        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+    };
+    LeftJoinWithLoop(input1, input2).Dump();
+    LeftJoinWithLinq(input1, input2).Dump();
+}
+
+List<string> LeftJoinWithLoop(List<Foo> input1, List<Bar> input2) {
+    var result = new List<string>();
+
+    foreach (var item1 in input1) {
+        var item2 = input2.Find(x => x.Id == item1.Id);
+        result.Add($"{item1.Value}{item2?.Value}");
+    }
+
+    return result;
+}
+
+IEnumerable<string> LeftJoinWithLinq(List<Foo> input1, List<Bar> input2) => input1
+    .GroupJoin(
+        input2, 
+        f => f.Id, 
+        b => b.Id, 
+        (f, bs) => (f, bs))
+    .SelectMany(
+        x => x.bs.DefaultIfEmpty(),
+        (x, b) => $"{x.f.Value}{b?.Value}");
+```
+
+The LINQ solution looks a bit hacky but should be extracted into a reusable extension method anyway. The MoreLINQ nuget package offers a `LeftJoin()` as well.
+
+### Right join
+
+The right join works the same way as the left join only with the operands flipped. 
+
+```
+void Main() {
+    var input1 = new List<Foo> { 
+        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+    };
+    var input2 = new List<Bar> { 
+        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+    };
+    RightJoinWithLoop(input1, input2).Dump();
+    RightJoinWithLinq(input1, input2).Dump();
+}
+
+List<string> RightJoinWithLoop(List<Foo> input1, List<Bar> input2) {
+    var result = new List<string>();
+
+    foreach (var item2 in input2) {
+        var item1 = input1.Find(x => x.Id == item2.Id);
+        result.Add($"{item1?.Value}{item2.Value}");
+    }
+
+    return result;
+}
+
+IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => input2
+    .GroupJoin(
+        input1, 
+        b => b.Id, 
+        f => f.Id, 
+        (b, fs) => (b, fs))
+    .SelectMany(
+        x => x.fs.DefaultIfEmpty(),
+        (x, f) => $"{f?.Value}{x.b.Value}");
+```
+
+The LINQ implementation should also be generalized to work on any `IEnumerable<TLeft>` and `IEnumerable<TRight>` though. Or you could use the `RightJoin()` from MoreLINQ.
+
+# Full join
+
+The full join is a beast. Period. Prepare for some serious head-scratching if you are ever faced with implementing it.
+
+The naïve solution involves doing both the left and right join and combining the results while duplicates are being discarded. This is how the loop solution works.
+   
+The LINQ solution (stolen from https://stackoverflow.com/a/13503860/1025555) is a bit more clever. It creates `Lookup`s first which offer constant-time lookup speed of the ids. It's still not exactly beautiful and should be hidden by generalizing it. MoreLINQ has a `FullJoin()` as well.
+
+```C#
+void Main() {
+    var input1 = new List<Foo> { 
+        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+    };
+    var input2 = new List<Bar> { 
+        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+    };
+    FullJoinWithLoop(input1, input2).Dump();
+    FullJoinWithLinq(input1, input2).Dump();
+}
+
+List<string> FullJoinWithLoop(List<Foo> input1, List<Bar> input2) {
+    var result = new HashSet<string>();
+
+    foreach (var item1 in input1) {
+        var item2 = input2.Find(x => x.Id == item1.Id);
+        result.Add($"{item1.Value}{item2?.Value}");
+    }
+
+    foreach (var item2 in input2) {
+        var item1 = input1.Find(x => x.Id == item2.Id);
+        result.Add($"{item1?.Value}{item2.Value}");
+    }
+
+    return result.ToList();
+}
+
+IEnumerable<string> FullJoinWithLinq(List<Foo> input1, List<Bar> input2) {
+    var lookup1 = input1.ToLookup(x => x.Id);
+    var lookup2 = input2.ToLookup(x => x.Id);
+    var ids = new HashSet<int>(lookup1.Select(p => p.Key));
+    ids.UnionWith(lookup2.Select(p => p.Key));
+    
+    return ids
+        .SelectMany(id => lookup1[id].DefaultIfEmpty(), (id, f) => (id, f))
+        .SelectMany(x => lookup2[x.id].DefaultIfEmpty(), (x, b) => (x.f, b))
+        .Select(x => $"{x.f?.Value}{x.b?.Value}");
+}
+```
