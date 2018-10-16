@@ -400,7 +400,7 @@ The LINQ solution looks a bit hacky but should be extracted into a reusable exte
 
 The right join works the same way as the left join only with the operands flipped. 
 
-```
+```C#
 void Main() {
     var input1 = new List<Foo> { 
         Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
