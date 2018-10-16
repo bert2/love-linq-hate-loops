@@ -20,24 +20,28 @@ void Main() {
         Bar.New(1, 10), Bar.New(2, 20.3), Bar.New(3, 30.5), Bar.New(4, 40)
     };
     ConditionalJoinWithLinq(input1, input2).Dump();
-    ConditionalJoinWithLinq(input1, input2).Dump();
+    ConditionalJoinWithBeautifulLinq(input1, input2).Dump();
 }
 
-IEnumerable<string> ConditionalJoinWithLinq(List<Foo> input1, List<Bar> input2) => input1
-    .Where(f => f.Id % 2 == 0)
-    .Join(input2, f => f.Id, b => b.Id, (f, b) => (f, b))
-    .Where(x => x.b.Value == Math.Floor(x.b.Value))
-    .Select(x => $"{x.f.Value}{x.b.Value}");
+IEnumerable<string> ConditionalJoinWithLinq(
+    List<Foo> input1, List<Bar> input2) 
+    => input1
+        .Where(f => f.Id % 2 == 0)
+        .Join(input2, f => f.Id, b => b.Id, (f, b) => (f, b))
+        .Where(x => x.b.Value == Math.Floor(x.b.Value))
+        .Select(x => $"{x.f.Value}{x.b.Value}");
 
-IEnumerable<string> ConditionalJoinWithBeautifulLinq(List<Foo> input1, List<Bar> input2) => input1
-    .EverySecondFoo()
-    .JoinBars(input2)
-    .Where(BarIsInteger)
-    .Select(x => $"{x.f.Value}{x.b.Value}");
+IEnumerable<string> ConditionalJoinWithBeautifulLinq(
+    List<Foo> input1, List<Bar> input2) 
+    => input1
+        .EverySecondFoo()
+        .JoinBars(input2)
+        .Where(BarIsInteger)
+        .Select(x => $"{x.f.Value}{x.b.Value}");
 
 public static class EnumerableExtensions {
-    public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos) => foos
-        .Where(f => f.Id % 2 == 0);
+    public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos) 
+        => foos.Where(f => f.Id % 2 == 0);
 
     public static IEnumerable<(Foo f, Bar b)> JoinBars(
         this IEnumerable<Foo> foos, IEnumerable<Bar> bars) 
