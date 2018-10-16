@@ -660,3 +660,23 @@ public static class EnumerableExtensions {
 
 bool BarIsInteger((Foo, Bar b) pair) => pair.b.Value == Math.Floor(pair.b.Value);
 ```
+
+## Tap
+
+The tap operator is helpful when you have to hook side effects lazily into your operator chain.
+
+Think of it as tapping a phone line: you can listen in on all elements going down the chain without anyone below noticing.
+
+```C#
+void Main() {
+    new[] {1, 2, 3}
+        .Tap(Console.Write)
+        .Dump();
+}
+
+public static class EnumerableExtensions {
+    public static IEnumerable<T> Tap<T>(
+        this IEnumerable<T> source, Action<T> action) 
+        => source.Select(x => { action(x); return x; });
+}
+```
