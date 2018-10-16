@@ -724,6 +724,6 @@ public static class EnumerableExtensions {
 ```
 
 <a name="closing"></a>
-## Closing thoughts
+## 18. Closing thoughts
 
 I hope that I could demonstrate how cleanly even complex logic can be organized with LINQ. I also hope you now share some of my obsessive hatred of loops :)
