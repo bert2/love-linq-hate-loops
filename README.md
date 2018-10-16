@@ -603,7 +603,7 @@ int ReduceWithLinq(int[] input) => input
 
 What if operating on list elements independently is not sufficient? What if the element's neighbors need to be considered as well? 
 
-Truth is there is no nice way of doing this with LINQ. If you know you are dealing with `IList<T>`s then you can use the trick demonstrated below. But if your `IEnumerable<T>` does not have an indexer then `ElementAt()` will go through all the elements unitl it reaches the `i`th one and performance will suffer.
+Truth is there is no nice way of doing this with LINQ. If you know you are dealing with `IList<T>`s then you can use the trick demonstrated below. But if your `IEnumerable<T>` does not have an indexer then `ElementAt()` will go through all the elements until it reaches the `i`th one and performance will suffer.
 
 Alternatively you can use MoreLINQ's `Pairwise()`. I added it's implementation here so you can see how it looks when LINQ reaches its limits.
 
