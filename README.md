@@ -270,7 +270,7 @@ Also consider how both solutions scale if we for instance wanted to only list th
 
 Don't try and boost your operator's scope by nesting lambdas like `CarryIndexWithDirtyLinq()` does. This is basically the same way the looping solution works and we want to do better than that.
 
-### Cross join
+### 8. Cross join
 
 When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join are you looking at?
 
@@ -302,7 +302,7 @@ IEnumerable<string> CrossJoinWithLinq(char[] input1, int[] input2) => input1
     .SelectMany(_ => input2, (x1, x2) => $"{x1}{x2}");
 ```
 
-### Inner join
+### 9. Inner join
 
 The inner join is also a fairly simple join. It's basically the intersection of two lists based on a common key.
 
@@ -354,7 +354,7 @@ class Bar {
 }
 ```
 
-### Left join
+### 10. Left join
 
 The left join is a bit more tricky to do with LINQ, because there is no inherent support for it.
    
@@ -396,7 +396,7 @@ IEnumerable<string> LeftJoinWithLinq(List<Foo> input1, List<Bar> input2) => inpu
 
 The LINQ solution looks a bit hacky but should be extracted into a reusable extension method anyway. The MoreLINQ nuget package offers a `LeftJoin()` as well.
 
-### Right join
+### 11. Right join
 
 The right join works the same way as the left join only with the operands flipped. 
 
@@ -436,7 +436,7 @@ IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => inp
 
 The LINQ implementation should also be generalized to work on any `IEnumerable<TLeft>` and `IEnumerable<TRight>` though. Or you could use the `RightJoin()` from MoreLINQ.
 
-### Full join
+### 12. Full join
 
 The full join is a beast. Period. Prepare for some serious head-scratching if you are ever faced with implementing it.
 
