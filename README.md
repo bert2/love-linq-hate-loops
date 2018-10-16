@@ -1,4 +1,4 @@
-### -1. Introduction
+## -1. Introduction
 
 LINQ has been around in C# for quite some time now. Still many programmers prefer explicit looping with `for` and `foreach` in situations that also could have been solved using LINQ operators.
 
@@ -18,7 +18,7 @@ Checkout the branch `about-to-fall-in-love` to implement the LINQ solutions your
 PS> git checkout about-to-fall-in-love
 ```
 
-### 0. Why I hate loops
+## 0. Why I hate loops
 
 Can you see what the `for` loop below does? No? Me neither. This just goes to show what ugly kind of things are possible with loops.
 
@@ -46,7 +46,7 @@ Of course, it's also possible to write clean code using `for` loops, as well it 
 
 Have you ever considered the level of abstraction loops offer? It's actually astonishingly low. In essence they are just syntactic sugar for a jump and a branch instruction which both wrap a couple more instructions. Sure, it's efficient. But so is assembly language.
 
-### 1. The only acceptable `for` loop
+## 1. The only acceptable `for` loop
 
 The only acceptable `for` loop is the one that has only one statement in it's body and does not need curly braces. In fact it should be enforced that loops are defined without curly braces to make sure they always have single-statement bodies.
 
@@ -69,7 +69,7 @@ Make the loop body a method in case it needs more statements. All dependencies s
 
 Still a for loop should only be used when the performance gain due to in-place editing of collections really is needed.
 
-### 2. The only acceptable `foreach` loop
+## 2. The only acceptable `foreach` loop
 
 The only acceptable `foreach` loop is the one being used to implement an extension method on `IEnumerable<T>` that takes an action with side-effects and executes it against each element. 
 
@@ -89,7 +89,7 @@ public static class EnumerableExtensions {
 }
 ```
 
-### 3. Map
+## 3. Map
 
 `Select()` is your bread...
 
@@ -113,7 +113,7 @@ IEnumerable<int> MapWithLinq(string[] input) => input
     .Select(int.Parse);
 ```
 
-### 4. Filter
+## 4. Filter
 
 ...and `Where()` is your butter.
 
@@ -138,7 +138,7 @@ IEnumerable<int> FilterWithLinq(int[] input) => input
     .Where(x => x % 2 == 0);
 ```
 
-### 5. Capture index
+## 5. Capture index
 
 Sometimes you need the element index in your mapping function. Sounds like the perfect job for a classic `for` loop, you think? Not on my watch!
 
@@ -171,7 +171,7 @@ int CaptureIndexWithLinq(int[] input) => input
 int MulByNthPowerOfTwo(int x, int n) => x << n;
 ```
 
-### 6. Flatten
+## 6. Flatten
 
 Flattening a list of lists is a fairly common operation. In loop land this is done with nesting. In LINQtopia however, it's just a call to `SelectMany()`.
 
@@ -203,7 +203,7 @@ IEnumerable<int> FlattenWithLinq(int[][] input) => input
 
 Note how this scales when applied to lists of lists of lists of... With loops you will need even more _nesting_, whereas with LINQ you keep _chaining_ `SelectMany()` until you reach the desired depth.
 
-### 7. Carry index
+## 7. Carry index
 
 The previous examples were all fine and dandy, but this is were programmers used to looping begin to object.
 
@@ -270,7 +270,7 @@ Also consider how both solutions scale if we for instance wanted to only list th
 
 Don't try and boost your operator's scope by nesting lambdas like `CarryIndexWithDirtyLinq()` does. This is basically the same way the looping solution works and we want to do better than that.
 
-### 8. Cross join
+## 8. Cross join
 
 When you see nested loops working away on two collections, chances are they are both being joined somehow. The question is: what kind of join are you looking at?
 
@@ -302,7 +302,7 @@ IEnumerable<string> CrossJoinWithLinq(char[] input1, int[] input2) => input1
     .SelectMany(_ => input2, (x1, x2) => $"{x1}{x2}");
 ```
 
-### 9. Inner join
+## 9. Inner join
 
 The inner join is also a fairly simple join. It's basically the intersection of two lists based on a common key.
 
@@ -354,7 +354,7 @@ class Bar {
 }
 ```
 
-### 10. Left join
+## 10. Left join
 
 The left join is a bit more tricky to do with LINQ, because there is no inherent support for it.
    
@@ -396,7 +396,7 @@ IEnumerable<string> LeftJoinWithLinq(List<Foo> input1, List<Bar> input2) => inpu
 
 The LINQ solution looks a bit hacky but should be extracted into a reusable extension method anyway. The MoreLINQ nuget package offers a `LeftJoin()` as well.
 
-### 11. Right join
+## 11. Right join
 
 The right join works the same way as the left join only with the operands flipped. 
 
@@ -436,7 +436,7 @@ IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => inp
 
 The LINQ implementation should also be generalized to work on any `IEnumerable<TLeft>` and `IEnumerable<TRight>` though. Or you could use the `RightJoin()` from MoreLINQ.
 
-### 12. Full join
+## 12. Full join
 
 The full join is a beast. Period. Prepare for some serious head-scratching if you are ever faced with implementing it.
 
