@@ -436,7 +436,7 @@ IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => inp
 
 The LINQ implementation should also be generalized to work on any `IEnumerable<TLeft>` and `IEnumerable<TRight>` though. Or you could use the `RightJoin()` from MoreLINQ.
 
-# Full join
+### Full join
 
 The full join is a beast. Period. Prepare for some serious head-scratching if you are ever faced with implementing it.
 
