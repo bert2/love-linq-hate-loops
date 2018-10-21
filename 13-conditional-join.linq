@@ -9,10 +9,10 @@
    abstract patterns when they are when they are riddled with special cases and 
    exceptions.
    
-   For instance, no requirements engineer will come to you and request a plain 
-   inner join of `Foo`s and `Bar`s. It's more likely that he or she says you 
-   should "marry" every second `Foo` with all the `Bar`s that "belong to it".
-   _But_ only the `Bar`s that are whole numbers!
+   For instance, no client will come to you and request a plain inner join of 
+   `Foo`s and `Bar`s. It's more likely that he or she says you should "marry" 
+   every second `Foo` with all the `Bar`s that "belong to it". _But_ only the 
+   `Bar`s that are whole numbers!
    
    "Easy enough", might Sir Loopalot think and begin hacking a nested loop 
    solution right away. And after sprinkling a couple of `if`s here and there it 

@@ -10,7 +10,7 @@
    It's also possible to replace one or more operators of your chain with an 
    extension method that reduces complexity and allows readers to focus on the 
    important parts. Notice how the second LINQ example almost reads like what the
-   requirements engineer was requesting back in example 13. */
+   client was requesting back in example 13. */
 
 void Main() {
     var input1 = new List<Foo> { 

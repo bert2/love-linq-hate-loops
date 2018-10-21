@@ -529,7 +529,7 @@ So why did I spent so much time showing how to do the different kinds of joins w
 
 The problem is, in the real world requirements are not as "synthetic" as in the previous examples. Reality is often complex and it's hard to identify and abstract patterns when they are riddled with special cases and exceptions.
 
-For instance, no requirements engineer will come to you and request a plain inner join of `Foo`s and `Bar`s. It's more likely that he or she says you should "marry" every second `Foo` with all the `Bar`s that "belong to it". _But_ only the `Bar`s that are whole numbers!
+For instance, no client will come to you and request a plain inner join of `Foo`s and `Bar`s. It's more likely that he or she says you should "marry" every second `Foo` with all the `Bar`s that "belong to it". _But_ only the `Bar`s that are whole numbers!
 
 "Easy enough", might Sir Loopalot think and begin hacking a nested loop solution right away. And after sprinkling a couple of `if`s here and there it even works! Done.
 
@@ -683,7 +683,7 @@ What makes LINQ so versatile are the ways a LINQ chain can be modularized.
 
 For one, you can replace complicated predicates and lambdas with private methods. You can also do that with the expression in an `if` statement, but the fact that LINQ operators take `Func`s allows you to elide those noisy arguments.
 
-It's also possible to replace one or more operators of your chain with an extension method that reduces complexity and allows readers to focus on the important parts. Notice how the second LINQ example almost reads like what the requirements engineer was requesting back in example 13.
+It's also possible to replace one or more operators of your chain with an extension method that reduces complexity and allows readers to focus on the important parts. Notice how the second LINQ example almost reads like what the client was requesting back in example 13.
 
 ```C#
 void Main() {
