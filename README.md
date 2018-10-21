@@ -38,7 +38,7 @@ PS> git checkout about-to-fall-in-love
 15. [Moving window](#15)
 16. [Tap](#16)
 17. [Modularization](#17)
-18. [Closing thoughts](#closing)
+18. [Summary](#summary)
 
 <a name="0"></a>
 ## 0. Why I hate loops
@@ -724,7 +724,18 @@ public static class EnumerableExtensions {
 bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
 ```
 
-<a name="closing"></a>
-## 18. Closing thoughts
+<a name="summary"></a>
+## 18. Summary
+
+Let's summarize the advantages of LINQ we noticed in the previous examples.
+
+- LINQ promotes reuse whereas code with loops tends to reinvent the wheel. If the compiler can do the looping for me then why should I bother to do it myself?
+- The different LINQ operators have to be learned once, but every instance of a loop has to be understood on its own, because its effect is not obvious and might even depend on minor implemenation details.
+- LINQ enforces a recognizable pattern: split your problem into smaller operations and chain them to form a pipeline.
+- LINQ is _declarative_ by nature and allows you to focus on intent instead of implemenation.
+- The more complex a problem the more nesting will be required in a solution using loops. LINQ chains are usually not nested, but linear and can be extended easily.
+- LINQ chains can be seamlessly modularized using extension functions.
+- Some list operations (e.g. join) have performance traps when DIY'ed naïvely.
+- `Func`s allow you to omit noisy parameters and arguments.
 
 I hope that I could demonstrate how cleanly even complex logic can be organized with LINQ. I also hope you now share some of my obsessive hatred of loops :)
