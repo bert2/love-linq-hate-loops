@@ -35,8 +35,7 @@ IEnumerable<string> ConditionalJoinWithBeautifulLinq(
     List<Foo> input1, List<Bar> input2) 
     => input1
         .EverySecondFoo()
-        .JoinBars(input2)
-        .Where(BarIsInteger)
+        .JoinBars(input2.Where(IsInteger))
         .Select(x => $"{x.f.Value}{x.b.Value}");
 
 public static class EnumerableExtensions {
@@ -48,7 +47,7 @@ public static class EnumerableExtensions {
         => foos.Join(bars, f => f.Id, b => b.Id, (f, b) => (f, b));
 }
 
-bool BarIsInteger((Foo, Bar b) pair) => pair.b.Value == Math.Floor(pair.b.Value);
+bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
 
 public class Foo {
     public static Foo New(int id, string v) => new Foo { Id = id, Value = v };
