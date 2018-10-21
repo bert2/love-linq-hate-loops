@@ -1,10 +1,10 @@
-## -1. Introduction
+## Introduction
 
 LINQ has been around in C# for quite some time now. Still many programmers prefer explicit looping with `for` and `foreach` in situations that also could have been solved using LINQ operators.
 
-I claim that to every problem that seemingly requires loops there is a LINQ solution which is cleaner. As a matter of fact, I believe that loops should be avoided at all costs and only be used in very rare special cases.
+I claim that to every problem that seemingly requires loops there is a LINQ solution which is cleaner. As a matter of fact, I believe that loops should be avoided and only be used in rare special cases.
 
-The following examples show LINQ solutions to common looping problems while pointing out the issues of loops.
+The following examples show LINQ solutions to common list transformation problems while pointing out the issues of using loops.
 
 Install [LINQPad](https://www.linqpad.net/) in order to run the example files.
 
@@ -12,7 +12,7 @@ Install [LINQPad](https://www.linqpad.net/) in order to run the example files.
 PS> choco install linqpad5
 ```
 
-Checkout the branch `about-to-fall-in-love` to implement the LINQ solutions yourself.
+Checkout the branch `about-to-fall-in-love` to try and implement the LINQ solutions yourself.
 
 ```
 PS> git checkout about-to-fall-in-love
@@ -36,8 +36,8 @@ PS> git checkout about-to-fall-in-love
 13. [Conditional join](#13)
 14. [Reduce](#14)
 15. [Moving window](#15)
-16. [Modularization](#16)
-17. [Tap](#17)
+16. [Tap](#16)
+17. [Modularization](#17)
 18. [Closing thoughts](#closing)
 
 <a name="0"></a>
@@ -656,7 +656,28 @@ public static class EnumerableExtensions {
 ```
 
 <a name="16"></a>
-## 16. Modularization
+## 16. Tap
+
+The tap operator is helpful when you have to hook side effects lazily into your operator chain.
+
+Think of it as tapping a phone line: you can listen in on all elements going down the chain without anyone below noticing.
+
+```C#
+void Main() {
+    new[] {1, 2, 3}
+        .Tap(Console.Write)
+        .Dump();
+}
+
+public static class EnumerableExtensions {
+    public static IEnumerable<T> Tap<T>(
+        this IEnumerable<T> source, Action<T> action) 
+        => source.Select(x => { action(x); return x; });
+}
+```
+
+<a name="17"></a>
+## 17. Modularization
 
 What makes LINQ so versatile are the ways a LINQ chain can be modularized.
 
@@ -701,27 +722,6 @@ public static class EnumerableExtensions {
 }
 
 bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
-```
-
-<a name="17"></a>
-## 17. Tap
-
-The tap operator is helpful when you have to hook side effects lazily into your operator chain.
-
-Think of it as tapping a phone line: you can listen in on all elements going down the chain without anyone below noticing.
-
-```C#
-void Main() {
-    new[] {1, 2, 3}
-        .Tap(Console.Write)
-        .Dump();
-}
-
-public static class EnumerableExtensions {
-    public static IEnumerable<T> Tap<T>(
-        this IEnumerable<T> source, Action<T> action) 
-        => source.Select(x => { action(x); return x; });
-}
 ```
 
 <a name="closing"></a>
