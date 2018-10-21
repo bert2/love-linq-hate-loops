@@ -730,7 +730,7 @@ bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
 Let's summarize the advantages of LINQ we noticed in the previous examples.
 
 - LINQ promotes reuse whereas code with loops tends to reinvent the wheel. If the compiler can do the looping for me then why should I bother to do it myself?
-- The different LINQ operators have to be learned once, but every instance of a loop has to be understood on its own, because its effect is not obvious and might even depend on minor implemenation details.
+- The different LINQ operators have to be learned once, but every instance of a loop has to be understood on its own, because its effect is not always obvious and might even depend on minor implemenation details.
 - LINQ enforces a recognizable pattern: split your problem into smaller operations and chain them to form a pipeline.
 - LINQ is _declarative_ by nature and allows you to focus on intent instead of implemenation.
 - The more complex a problem the more nesting will be required in a solution using loops. LINQ chains are usually not nested, but linear and can be extended easily.
