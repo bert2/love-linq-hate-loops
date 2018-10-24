@@ -17,6 +17,9 @@ Checkout the branch `about-to-fall-in-love` to try and implement the LINQ soluti
 ```
 PS> git checkout about-to-fall-in-love
 ```
+### TL;DR
+
+Jump straight to the [summary](#summary).
 
 ### Table of contents
 
