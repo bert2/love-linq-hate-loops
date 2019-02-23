@@ -5,7 +5,11 @@
    and executes it against each element. 
    
    This extension method can be appended to the end of your LINQ operator chain as
-   fluently as any other LINQ operator. */
+   fluently as any other LINQ operator.
+   
+   Do not use `ForEach()` as a mere replacement for `foreach`! Using `ForEach()` 
+   implies that you are mutating state with side-effects, which should happen 
+   sparingly. Remember: side-effects are dirty; it's immutability we are after. */
 
 void Main() {
     var tokens = new[] { "Hello", ",", " ", "world", "!" };

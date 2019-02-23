@@ -9,10 +9,10 @@
 
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
     };
     var input2 = new List<Bar> { 
-        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
     };
     RightJoinWithLoop(input1, input2).Dump();
     RightJoinWithLinq(input1, input2).Dump();
@@ -40,13 +40,13 @@ IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => inp
         (x, f) => $"{f?.Value}{x.b.Value}");
 
 class Foo {
-    public static Foo New(int id, string v) => new Foo { Id = id, Value = v };
+    public Foo(int id, string v) { Id = id; Value = v; }
     public int Id { get; set; }
     public string Value { get; set; }
 }
 
 class Bar {
-    public static Bar New(int id, int v) => new Bar { Id = id, Value = v };
+    public Bar(int id, int v) { Id = id; Value = v; }
     public int Id { get; set; }
     public int Value { get; set; }
 }

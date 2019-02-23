@@ -1,6 +1,6 @@
 <Query Kind="Program" />
 
-/* The previous examples were all fine and dandy, but this is were programmers
+/* The previous examples were all fine and dandy, but here is were programmers
    used to looping begin to object.
    
    The example pairs each element index (the place of a runner in a competition)
@@ -33,7 +33,7 @@
 
 void Main() {
     var input = new[] {
-        new TestResult { Runner = "Road Runner", Drugs = new string[] { } },
+        new TestResult { Runner = "Road Runner", Drugs = new string[0] },
         new TestResult { Runner = "Flash", Drugs = new[] { "amphetamines", "steroids" } },
         new TestResult { Runner = "Sonic", Drugs = new[] { "steroids" } }
     };

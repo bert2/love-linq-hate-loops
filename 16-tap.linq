@@ -8,7 +8,9 @@
 
 void Main() {
     new[] {1, 2, 3}
+        .Select(x => x + 1)
         .Tap(Console.Write)
+        .Select(x => x * x)
         .Dump();
 }
 

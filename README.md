@@ -21,6 +21,14 @@ PS> git checkout about-to-fall-in-love
 
 Jump straight to the [summary](#summary).
 
+### Disclaimer
+
+Some of my statements in this text might seem a bit absolute or even harsh. But after over 15 years of coding I've seen some pretty abhorrent nesting of loops in legacy code over and over again (including code I wrote myself) which leads to some frustration of course.
+
+The sad part is though, that I've also seen the same nested loops happening in greenfield projects. Either because the developers are just used to this kind of code and don't know better, or because they feel inclined to take shortcuts due to pressure or laziness. And that's a big problem.
+
+With this guide I'm hoping to do a small part in alleviating this problem, but take what I write here with a grain of salt.
+
 ### Table of contents
 
 0. [Why I hate loops](#0)
@@ -68,12 +76,18 @@ for (var i = 0; i < a.Length; i++) {
 a.Dump();
 ```
 
-Of course, it's also possible to write clean code using `for` loops, as well it is possible to write dirty code using LINQ. However, one of the two promotes abstraction, modularization, and immutability more than the other. Guess which one I'm talking about.
+Of course, it's also possible to write clean code using `for` loops, as well as it is possible to write dirty code using LINQ. However, LINQ promotes abstraction, modularization, and immutability more than loops do. LINQ does this by taking power away from you and in the beginning it might feel you are programming with your hands tied to your back. But in the long run you will end up with code that is easier to maintain.
 
-Have you ever considered the level of abstraction loops offer? It's actually astonishingly low. In essence they are just syntactic sugar for a jump and a branch instruction which both wrap a couple more instructions. Sure, it's efficient. But so is coding in assembly language.
+Have you ever considered the level of abstraction loops offer? It's actually astonishingly low. In essence they are just syntactic sugar for an increment and a branch instruction that both wrap the instructions of your loop body. Sure, it's efficient. But so is coding in assembly language. Because loops are so low-level, some people even say that [the `for` loop will be the new `goto`]( https://www.quora.com/Can-we-say-that-the-for-loop-will-be-the-new-goto-%E2%80%9D-given-the-increasing-popularity-of-functional-programming/answer/Tikhon-Jelvis?share=1&srid=3SJB).
 
-This lack of abstraction forces readers to carefully track state in order to understand what your loop is doing. One cannot immediately tell whether the loop is for instance filtering or mapping the input list (or maybe it's doing both operations at once). With LINQ operators intent becomes more explicit, because a `Where()` will always filter and a `Select()` will always map.
-   
+The lack of abstraction of loops forces readers to carefully track state in order to understand what your loop is doing. One cannot immediately tell whether the loop is for instance filtering or mapping the input list (or maybe it's doing both operations at once). With LINQ operators intent becomes more explicit, because a `Where()` will always filter and a `Select()` will always map.
+
+The hard truth is though that most programmers, when given a problem that requires some kind of looping, will be fastest when coding it using `for`/`foreach` loops. I think that's because they already have an _abstract model_ of the problem in their heads and coding appears as the act of merely turning this model into _concrete instructions_. But that's where they are wrong. Because now it is up to the readers of their code to _reverse engineer_ that abstract model from a set of statements that really could do anything.
+
+This is were LINQ helps. Using LINQ forces you to stay in the abstract realm more than loops do and delegates the dirty business with concrete instructions to the compiler.
+
+In short: excessively relying on loops is like not writing tests. Sure, you will be faster now, but in the end your colleagues will hate you for it.
+
 <a name="1"></a>
 ## 1. The only acceptable `for` loop
 
@@ -118,6 +132,8 @@ public static class EnumerableExtensions {
     }
 }
 ```
+
+Do not use `ForEach()` as a mere replacement for `foreach`! Using `ForEach()` implies that you are mutating state with side-effects, which should happen sparingly. Remember: side-effects are dirty; it's immutability we are after.
 
 <a name="3"></a>
 ## 3. Map
@@ -198,11 +214,13 @@ int CaptureIndexWithLoop(int[] input) {
 
 int CaptureIndexWithLinq(int[] input) => input
     .Reverse()
-    .Select(MulByNthPowerOfTwo)
+    .Select((x, i) => MulByNthPowerOfTwo(x, i))
     .Sum();
 
 int MulByNthPowerOfTwo(int x, int n) => x << n;
 ```
+
+Notice how the parameters of the lambda in `Select((x, i) => ...`) match up with parameters of `MulByNthPowerOfTwo(int x, int n)`? This means we could leave them out entirely and write `Select(MulByNthPowerOfTwo)`, which is less redundant.
 
 <a name="6"></a>
 ## 6. Flatten
@@ -240,7 +258,7 @@ Note how this scales when applied to lists of lists of lists of... With loops yo
 <a name="7"></a>
 ## 7. Carry index
 
-The previous examples were all fine and dandy, but this is were programmers used to looping begin to object.
+The previous examples were all fine and dandy, but here is were programmers used to looping begin to object.
 
 The example pairs each element index (the place of a runner in a competition) with the elements of a nested collection (the drugs the runner used). We are _carrying_ the indeces down into a deeper level, so to speak. It's probably easier to understand if you just run the example right now and have a look at the output.
 
@@ -259,7 +277,7 @@ The example pairs each element index (the place of a runner in a competition) wi
 ```C#
 void Main() {
     var input = new[] {
-        new TestResult { Runner = "Road Runner", Drugs = new string[] { } },
+        new TestResult { Runner = "Road Runner", Drugs = new string[0] },
         new TestResult { Runner = "Flash", Drugs = new[] { "amphetamines", "steroids" } },
         new TestResult { Runner = "Sonic", Drugs = new[] { "steroids" } }
     };
@@ -305,6 +323,8 @@ Also consider how both solutions scale if we for instance wanted to only list th
 
 Don't try and boost your operator's scope by nesting lambdas like `CarryIndexWithDirtyLinq()` does. This is basically the same way the looping solution works and we want to do better than that.
 
+Of course, we are not restricted to carrying only indices. The same patterns works when you have to carry other data from the top level collection into the deeper levels of nested collections.
+
 <a name="8"></a>
 ## 8. Cross join
 
@@ -341,21 +361,21 @@ IEnumerable<string> CrossJoinWithLinq(char[] input1, int[] input2) => input1
 <a name="9"></a>
 ## 9. Inner join
 
-The inner join is also a fairly simple join. It's basically the intersection of two lists based on a common key.
+The inner join also is a fairly simple join. It's basically the intersection of two lists based on a common key.
 
 The inner join is so prevalent that LINQ has it's own operator for it: `Join()`. There is no excuse not to use it. Especially considering that the inner join is often implemented rather ineffeciently when done by looplanders. Can you spot the performance issue in the loop example?
 
-The nested loops look innocent, but we do a linear search there in order to find the matching item in `input2`. Madness! That's `O(NM)`! Converting `input2` to a `Lookup<Bar>` beforehand will give us `O(N)`.
+The nested loops look innocent, but we do a linear search there in order to find the matching item in `input2`. Madness! That's `O(NM)`! Converting `input2` to a `Lookup<Bar>` beforehand would give us `O(N)`.
 
 Or we can just use `Join()` and let LINQ do the busywork for us...
 
 ```C#
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
     };
     var input2 = new List<Bar> { 
-        Bar.New(1, 100), Bar.New(2, 200), Bar.New(2, 201), Bar.New(4, 300) 
+        new Bar(1, 100), new Bar(2, 200), new Bar(2, 201), new Bar(4, 400) 
     };
     InnerJoinWithLoop(input1, input2).Dump();
     InnerJoinWithLinq(input1, input2).Dump();
@@ -379,13 +399,13 @@ IEnumerable<string> InnerJoinWithLinq(List<Foo> input1, List<Bar> input2) => inp
         (f, b) => $"{f.Value}{b.Value}");
 
 class Foo {
-    public static Foo New(int id, string v) => new Foo { Id = id, Value = v };
+    public Foo(int id, string v) { Id = id; Value = v; }
     public int Id { get; set; }
     public string Value { get; set; }
 }
 
 class Bar {
-    public static Bar New(int id, int v) => new Bar { Id = id, Value = v };
+    public Bar(int id, int v) { Id = id; Value = v; }
     public int Id { get; set; }
     public int Value { get; set; }
 }
@@ -401,10 +421,10 @@ Luckily we can use `GroupJoin()` to get an empty list for all the items from the
 ```C#
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
     };
     var input2 = new List<Bar> { 
-        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
     };
     LeftJoinWithLoop(input1, input2).Dump();
     LeftJoinWithLinq(input1, input2).Dump();
@@ -432,7 +452,7 @@ IEnumerable<string> LeftJoinWithLinq(List<Foo> input1, List<Bar> input2) => inpu
         (x, b) => $"{x.f.Value}{b?.Value}");
 ```
 
-The LINQ solution looks a bit hacky but should be extracted into a reusable extension method anyway. The MoreLINQ nuget package offers a `LeftJoin()` as well.
+The LINQ solution looks a bit hacky but should be extracted into a reusable extension method anyway. The [MoreLINQ](https://github.com/morelinq/MoreLINQ) nuget package offers a `LeftJoin()` as well.
 
 <a name="11"></a>
 ## 11. Right join
@@ -442,10 +462,10 @@ The right join works the same way as the left join only with the operands flippe
 ```C#
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
     };
     var input2 = new List<Bar> { 
-        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
     };
     RightJoinWithLoop(input1, input2).Dump();
     RightJoinWithLinq(input1, input2).Dump();
@@ -487,10 +507,10 @@ The LINQ solution (stolen from https://stackoverflow.com/a/13503860/1025555) is 
 ```C#
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C") 
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
     };
     var input2 = new List<Bar> { 
-        Bar.New(2, 200), Bar.New(3, 300), Bar.New(4, 400) 
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
     };
     FullJoinWithLoop(input1, input2).Dump();
     FullJoinWithLinq(input1, input2).Dump();
@@ -543,10 +563,10 @@ Of course, most developers will consider those questions before starting to code
 ```C#
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C"), Foo.New(4, "D")
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C"), new Foo(4, "D")
     };
     var input2 = new List<Bar> { 
-        Bar.New(1, 10), Bar.New(2, 20.3), Bar.New(3, 30.5), Bar.New(4, 40)
+        new Bar(1, 10), new Bar(2, 20.3), new Bar(3, 30.5), new Bar(4, 40)
     };
     ConditionalJoinWithLoop(input1, input2).Dump();
     ConditionalJoinWithLinq(input1, input2).Dump();
@@ -573,6 +593,10 @@ IEnumerable<string> ConditionalJoinWithLinq(List<Foo> input1, List<Bar> input2) 
     .Where(x => x.b.Value == Math.Floor(x.b.Value))
     .Select(x => $"{x.f.Value}{x.b.Value}");
 ```
+
+The amount and the density of lambdas in the LINQ solution might be confusing at first, but that's just someting one has to learn and get used to. Look at it this way: understanding how some method solves a specific problem with nested `for`s and `if`s helps you with exactly one thing--understanding how this one method works. But learning `Join()` and how it can be used will help you everytime you see it in action somewhere else.
+
+Nethertheless I will show how to beautify the above solution in [example 17](#17).
 
 <a name="14"></a>
 ## 14. Reduce
@@ -668,7 +692,9 @@ Think of it as tapping a phone line: you can listen in on all elements going dow
 ```C#
 void Main() {
     new[] {1, 2, 3}
+        .Select(x => x + 1)
         .Tap(Console.Write)
+        .Select(x => x * x)
         .Dump();
 }
 
@@ -686,15 +712,15 @@ What makes LINQ so versatile are the ways a LINQ chain can be modularized.
 
 For one, you can replace complicated predicates and lambdas with private methods. You can also do that with the expression in an `if` statement, but the fact that LINQ operators take `Func`s allows you to elide those noisy arguments.
 
-It's also possible to replace one or more operators of your chain with an extension method that reduces complexity and allows readers to focus on the important parts. Notice how the second LINQ example almost reads like what the client was requesting back in example 13.
+It's also possible to replace one or more operators of your chain with an extension method that reduces complexity and allows readers to focus on the important parts. Notice how the second LINQ example almost reads like what the client was requesting back in [example 13](#13).
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C"), Foo.New(4, "D")
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C"), new Foo(4, "D")
     };
-    var input2 = new List<Bar> { 
-        Bar.New(1, 10), Bar.New(2, 20.3), Bar.New(3, 30.5), Bar.New(4, 40)
+    var input2 = new List<Bar> {
+        new Bar(1, 10), new Bar(2, 20.3), new Bar(3, 30.5), new Bar(4, 40)
     };
     ConditionalJoinWithLinq(input1, input2).Dump();
     ConditionalJoinWithBeautifulLinq(input1, input2).Dump();
@@ -715,7 +741,7 @@ IEnumerable<string> ConditionalJoinWithBeautifulLinq(
         .JoinBars(input2.Where(IsInteger))
         .Select(x => $"{x.f.Value}{x.b.Value}");
 
-public static class EnumerableExtensions {
+internal static class Extensions {
     public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos) 
         => foos.Where(f => f.Id % 2 == 0);
 
@@ -726,6 +752,8 @@ public static class EnumerableExtensions {
 
 bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
 ```
+
+Notice how we are using extensions methods in way that probably wasn't intended by the C# developers. Extensions methods have to be public, but here we only need them locally in our current context. The best we can do is to hide them in a deep namespace and make the extension class `internal`.
 
 <a name="summary"></a>
 ## 18. Summary

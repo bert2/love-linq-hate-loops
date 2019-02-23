@@ -24,14 +24,23 @@
    
    Of course, most developers will consider those questions before starting to
    code. But LINQ actually enforces this kind of thinking. LINQ makes it harder
-   for you to take shortcuts that sacrifice maintainability on the long run. */
+   for you to take shortcuts that sacrifice maintainability on the long run.
+   
+   The amount and the density of lambdas in the LINQ solution might be confusing 
+   at first, but that's just someting one has to learn and get used to. Look at 
+   it this way: understanding how some method solves a specific problem with 
+   nested `for`s and `if`s helps you with exactly one thing--understanding how 
+   this one method works. But learning `Join()` and how it can be used will help 
+   you everytime you see it in action somewhere else.
+   
+   Nethertheless I will show how to beautify the above solution in example 17. */
 
 void Main() {
     var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C"), Foo.New(4, "D")
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C"), new Foo(4, "D")
     };
     var input2 = new List<Bar> { 
-        Bar.New(1, 10), Bar.New(2, 20.3), Bar.New(3, 30.5), Bar.New(4, 40)
+        new Bar(1, 10), new Bar(2, 20.3), new Bar(3, 30.5), new Bar(4, 40)
     };
     ConditionalJoinWithLoop(input1, input2).Dump();
     ConditionalJoinWithLinq(input1, input2).Dump();
@@ -59,13 +68,13 @@ IEnumerable<string> ConditionalJoinWithLinq(List<Foo> input1, List<Bar> input2) 
     .Select(x => $"{x.f.Value}{x.b.Value}");
 
 class Foo {
-    public static Foo New(int id, string v) => new Foo { Id = id, Value = v };
+    public Foo(int id, string v) { Id = id; Value = v; }
     public int Id { get; set; }
     public string Value { get; set; }
 }
 
 class Bar {
-    public static Bar New(int id, double v) => new Bar { Id = id, Value = v };
+    public Bar(int id, double v) { Id = id; Value = v; }
     public int Id { get; set; }
     public double Value { get; set; }
 }

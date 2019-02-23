@@ -10,14 +10,19 @@
    It's also possible to replace one or more operators of your chain with an 
    extension method that reduces complexity and allows readers to focus on the 
    important parts. Notice how the second LINQ example almost reads like what the
-   client was requesting back in example 13. */
+   client was requesting back in example 13.
+   
+   Notice how we are using extensions methods in way that probably wasn't 
+   intended by the C# developers. Extensions methods have to be public, but here 
+   we only need them locally in our current context. The best we can do is to 
+   hide them in a deep namespace and make the extension class `internal`. */
 
 void Main() {
-    var input1 = new List<Foo> { 
-        Foo.New(1, "A"), Foo.New(2, "B"), Foo.New(3, "C"), Foo.New(4, "D")
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C"), new Foo(4, "D")
     };
-    var input2 = new List<Bar> { 
-        Bar.New(1, 10), Bar.New(2, 20.3), Bar.New(3, 30.5), Bar.New(4, 40)
+    var input2 = new List<Bar> {
+        new Bar(1, 10), new Bar(2, 20.3), new Bar(3, 30.5), new Bar(4, 40)
     };
     ConditionalJoinWithLinq(input1, input2).Dump();
     ConditionalJoinWithBeautifulLinq(input1, input2).Dump();
@@ -38,7 +43,7 @@ IEnumerable<string> ConditionalJoinWithBeautifulLinq(
         .JoinBars(input2.Where(IsInteger))
         .Select(x => $"{x.f.Value}{x.b.Value}");
 
-public static class EnumerableExtensions {
+internal static class Extensions {
     public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos) 
         => foos.Where(f => f.Id % 2 == 0);
 
@@ -49,14 +54,14 @@ public static class EnumerableExtensions {
 
 bool IsInteger(Bar b) => b.Value == Math.Floor(b.Value);
 
-public class Foo {
-    public static Foo New(int id, string v) => new Foo { Id = id, Value = v };
+class Foo {
+    public Foo(int id, string v) { Id = id; Value = v; }
     public int Id { get; set; }
     public string Value { get; set; }
 }
 
-public class Bar {
-    public static Bar New(int id, double v) => new Bar { Id = id, Value = v };
+class Bar {
+    public Bar(int id, double v) { Id = id; Value = v; }
     public int Id { get; set; }
     public double Value { get; set; }
 }

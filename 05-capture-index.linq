@@ -10,7 +10,12 @@
    bits this is easy enough, but we have to keep in mind that the least 
    significant bit is the _last_ element of the input. Of course we can work out 
    the correct process with a `for` loop (after fixing this damn off-by-one 
-   error...), but see how natural you can express this reversal with LINQ. */
+   error...), but see how natural you can express this reversal with LINQ.
+   
+   Notice how the parameters of the lambda in `Select((x, i) => ...`) match up 
+   with parameters of `MulByNthPowerOfTwo(int x, int n)`? This means we could
+   leave them out entirely and write `Select(MulByNthPowerOfTwo)`, which is less 
+   redundant. */
 
 void Main() {
     var input = new[] { 1, 1, 0, 1 };
@@ -23,14 +28,14 @@ int CaptureIndexWithLoop(int[] input) {
     var lastIndex = input.Length - 1;
     
     for (var i = 0; i < input.Length; i++)
-        result += MulNthPowOf2(input[i], lastIndex - i);
+        result += MulByNthPowerOfTwo(input[i], lastIndex - i);
 
     return result;
 }
 
 int CaptureIndexWithLinq(int[] input) => input
     .Reverse()
-    .Select(MulNthPowOf2)
+    .Select((x, i) => MulByNthPowerOfTwo(x, i))
     .Sum();
 
-int MulNthPowOf2(int x, int n) => x << n;
+int MulByNthPowerOfTwo(int x, int n) => x << n;
