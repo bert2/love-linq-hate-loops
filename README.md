@@ -790,7 +790,9 @@ The rule of thumb is that an operator returning `IEnumerable<T>` will deferr exe
 
 Let's finish this section with a motivational picture that should help getting those lazy LINQ operators to work harder:
 
-![image](https://user-images.githubusercontent.com/1454629/53301663-e3660380-3855-11e9-8316-58d447d7b33e.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1454629/53301663-e3660380-3855-11e9-8316-58d447d7b33e.png"/>
+</p>
 
 <a name="summary"></a>
 ## 19. Summary
