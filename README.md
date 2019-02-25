@@ -12,11 +12,6 @@ Install [LINQPad](https://www.linqpad.net/) in order to run the example files.
 PS> choco install linqpad5
 ```
 
-Checkout the branch `about-to-fall-in-love` to try and implement the LINQ solutions yourself.
-
-```
-PS> git checkout about-to-fall-in-love
-```
 ### TL;DR
 
 Jump straight to the [summary](#summary).
