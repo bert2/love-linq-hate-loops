@@ -32,8 +32,8 @@
    hit again, because exectution will always continue _after_ the `yield return`
    executed last.
    
-   But there's another problem: the Fibonacci sequence is infinite, but the range
-   of `int` is not. And the numbers grow so fast that we cannot even get 50 
+   And yet another another problem: the Fibonacci sequence is infinite, but the 
+   range of `int` is not. And the numbers grow so fast that we cannot even get 50 
    values from our generator without getting overflown negative numbers. The 
    solution is to only return those numbers we can accurately compute and stop 
    the generator as soon as we overflow the `int` range. We do this by breaking 
@@ -48,8 +48,10 @@
    Every such member essentially becomes its own class capable of halting and 
    resuming execution while preserving local state (i.e. a state machine). You
    can see for yourself by opening a decompiled view of our LINQPad code with 
-   `Alt`+`Shift`+`R` (requires ILSpy) and navigating to the compiler-generated 
-   class `<get_MyHobbies>d__5`. */
+   `Alt`+`Shift`+`R` (requires ILSpy [1]) and navigating to the 
+   compiler-generated class `<get_MyHobbies>d__5`. 
+   
+   [1] https://github.com/icsharpcode/ILSpy/releases */
 
 void Main() {
     foreach (var num in Range(10, 13))
