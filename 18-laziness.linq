@@ -4,7 +4,7 @@
    the LINQ chain below for example. It increments each number in the array by 
    one, squares them, and then prints them to the console using `Tap()`. But when
    you run the example in LINQPad nothing happens. There is no output whatsoever.
-   Why? 
+   Why is that?
    
    The answer is that LINQ operators only begin their work when something 
    actually requests a value from them. This is called _deferred execution_: you 
@@ -27,14 +27,14 @@
    in-memory collection, a specialized generator function like 
    `Enumerable.Range()`, the filesystem, a database query; you name it.
    
-   As soon as the first value was generated it will be fed to first operator in
-   the chain, which will do its work and then forward it to the next operator.
+   As soon as the first value was generated it will be fed to the first operator 
+   in the chain, which will do its work and then forward it to the next operator.
    This continues until the value reaches the _enumerator_. When the enumerator
    requests the next value the same process will start over again.
    
    If you check the implementation of `Tap()` now, you will notice that it does 
    not do any looping at all. It just adds another `Select()` to the chain. 
-   That's why there is nothing happening. We canot use `Tap()` to terminate our 
+   That's why there is nothing happening. We cannot use `Tap()` to terminate our 
    chain, because it cannot act as an enumerator. We have to use `ForEach()`.
    
    The rule of thumb is that an operator returning `IEnumerable<T>` will deferr 

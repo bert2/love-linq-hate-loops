@@ -759,7 +759,7 @@ Notice how we are using extensions methods in way that probably wasn't intended 
 <a name="18"></a>
 ## 18. Laziness
 
-What throws a lot of people off when starting with LINQ is it's laziness. Take the LINQ chain below for example. It increments each number in the array by one, squares them, and then prints them to the console using `Tap()`. But when you run the example in LINQPad nothing happens. There is no output whatsoever. Why? 
+What throws a lot of people off when starting with LINQ is it's laziness. Take the LINQ chain below for example. It increments each number in the array by one, squares them, and then prints them to the console using `Tap()`. But when you run the example in LINQPad nothing happens. There is no output whatsoever. Why is that? 
 
 ```
 void Main() {
@@ -782,9 +782,9 @@ That "something" that has to be done is _enumeration_ and is usually initiated b
 
 Enumerating the values of a LINQ chain triggers a process called _materialization_ where the last operator of the chain is queried for a value by the enumerating loop. This operator will in turn request a value from its input, which might be another operator preceeding it. The chain is traversed backwards up until an `IEnumerable` is reached that acts as the _value generator_ of the chain. Such a generator could be anything from an in-memory collection, a specialized generator function like `Enumerable.Range()`, the filesystem, a database query; you name it.
 
-As soon as the first value was generated it will be fed to first operator in the chain, which will do its work and then forward it to the next operator. This continues until the value reaches the _enumerator_. When the enumerator requests the next value the same process will start over again.
+As soon as the first value was generated it will be fed to the first operator in the chain, which will do its work and then forward it to the next operator. This continues until the value reaches the _enumerator_. When the enumerator requests the next value the same process will start over again.
 
-If you check the implementation of `Tap()` now, you will notice that it does not do any looping at all. It just adds another `Select()` to the chain. That's why there is nothing happening. We canot use `Tap()` to terminate our chain, because it cannot act as an enumerator. We have to use `ForEach()`.
+If you check the implementation of `Tap()` now, you will notice that it does not do any looping at all. It just adds another `Select()` to the chain. That's why there is nothing happening. We cannot use `Tap()` to terminate our chain, because it cannot act as an enumerator. We have to use `ForEach()`.
 
 The rule of thumb is that an operator returning `IEnumerable<T>` will deferr execution and an operator returning `void` will enumerate.
 
