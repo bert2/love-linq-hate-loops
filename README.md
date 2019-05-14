@@ -26,28 +26,32 @@ With this guide I'm hoping to do a small part in alleviating this problem, but t
 
 ### Table of contents
 
-0. [Why I hate loops](#0)
-1. [The only acceptable `for` loop](#1)
-2. [The only acceptable `foreach` loop](#2)
-3. [Map](#3)
-4. [Filter](#4)
-5. [Capture index](#5)
-6. [Flatten](#6)
-7. [Carry index](#7)
-8. [Cross join](#8)
-9. [Inner join](#9)
-10. [Left join](#10)
-11. [Right join](#11)
-12. [Full join](#12)
-13. [Conditional join](#13)
-14. [Reduce](#14)
-15. [Moving window](#15)
-16. [Tap](#16)
-17. [Modularization](#17)
-18. [Laziness](#18)
-19. [How to be lazy](#19)
-20. [Debugging](#20)
-21. [Summary](#summary)
+- [Introduction](#introduction)
+  - [TL;DR](#tldr)
+  - [Disclaimer](#disclaimer)
+  - [Table of contents](#table-of-contents)
+- [0. Why I hate loops](#0-why-i-hate-loops)
+- [1. The only acceptable `for` loop](#1-the-only-acceptable-for-loop)
+- [2. The only acceptable `foreach` loop](#2-the-only-acceptable-foreach-loop)
+- [3. Map](#3-map)
+- [4. Filter](#4-filter)
+- [5. Capture index](#5-capture-index)
+- [6. Flatten](#6-flatten)
+- [7. Carry index](#7-carry-index)
+- [8. Cross join](#8-cross-join)
+- [9. Inner join](#9-inner-join)
+- [10. Left join](#10-left-join)
+- [11. Right join](#11-right-join)
+- [12. Full join](#12-full-join)
+- [13. Conditional join](#13-conditional-join)
+- [14. Reduce](#14-reduce)
+- [15. Moving window](#15-moving-window)
+- [16. Tap](#16-tap)
+- [17. Modularization](#17-modularization)
+- [18. Laziness](#18-laziness)
+- [19. How to be lazy](#19-how-to-be-lazy)
+- [20. Debugging](#20-debugging)
+- [21. Summary](#21-summary)
 
 <a name="0"></a>
 ## 0. Why I hate loops
@@ -62,12 +66,12 @@ var x = 0;
 for (var i = 0; i < a.Length; i++) {
     if (i % 3 == 0 && i > 0)
         a[i - 1] += a[i];
-    
+
     if (a[i] % 2 == 0) {
         --x;
         continue;
-    } 
-    
+    }
+
     a[i] += x;
 }
 
@@ -113,7 +117,7 @@ Still a for loop should only be used when the performance gain due to in-place e
 <a name="2"></a>
 ## 2. The only acceptable `foreach` loop
 
-The only acceptable `foreach` loop is the one being used to implement an extension method on `IEnumerable<T>` that takes an action with side-effects and executes it against each element. 
+The only acceptable `foreach` loop is the one being used to implement an extension method on `IEnumerable<T>` that takes an action with side-effects and executes it against each element.
 
 This extension method can be appended to the end of your LINQ operator chain as fluently as any other LINQ operator.
 
@@ -147,10 +151,10 @@ void Main() {
 
 List<int> MapWithLoop(string[] input) {
     var result = new List<int>();
-    
+
     foreach (var item in input)
         result.Add(int.Parse(item));
-    
+
     return result;
 }
 
@@ -203,7 +207,7 @@ void Main() {
 int CaptureIndexWithLoop(int[] input) {
     var result = 0;
     var lastIndex = input.Length - 1;
-    
+
     for (var i = 0; i < input.Length; i++)
         result += MulByNthPowerOfTwo(input[i], lastIndex - i);
 
@@ -227,8 +231,8 @@ Flattening a list of lists is a fairly common operation. In loop land this is do
 
 ```C#
 void Main() {
-    var input = new[] { 
-        new[] { 1, 2 }, 
+    var input = new[] {
+        new[] { 1, 2 },
         new[] { 10, 20 },
         new[] { 100, 200 }
     };
@@ -258,7 +262,7 @@ Note how this scales when applied to lists of lists of lists of... With loops yo
 
 The previous examples were all fine and dandy, but here is were programmers used to looping begin to object.
 
-The example pairs each element index (the place of a runner in a competition) with the elements of a nested collection (the drugs the runner used). We are _carrying_ the indeces down into a deeper level, so to speak. It's probably easier to understand if you just run the example right now and have a look at the output.
+The example pairs each element index (the place of a runner in a competition) with the elements of a nested collection (the drugs the runner used). We are _carrying_ the indices down into a deeper level, so to speak. It's probably easier to understand if you just run the example right now and have a look at the output.
 
 > ```
 > +---------------------------+
@@ -298,7 +302,7 @@ List<string> CarryIndexWithLoop(TestResult[] input) {
 IEnumerable<string> CarryIndexWithLinq(TestResult[] input) => input
     .Select((testResult, place) => (testResult, place))
     .SelectMany(
-        x => x.testResult.Drugs, 
+        x => x.testResult.Drugs,
         (x, drug) => MakeReportLine(x.place, drug));
 
 IEnumerable<string> CarryIndexWithDirtyLinq(TestResult[] input) => input
@@ -348,7 +352,7 @@ List<string> CrossJoinWithLoop(char[] input1, int[] input2) {
     foreach (var item1 in input1)
         foreach (var item2 in input2)
             result.Add($"{item1}{item2}");
-    
+
     return result;
 }
 
@@ -369,11 +373,11 @@ Or we can just use `Join()` and let LINQ do the busywork for us...
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
-        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C")
     };
-    var input2 = new List<Bar> { 
-        new Bar(1, 100), new Bar(2, 200), new Bar(2, 201), new Bar(4, 400) 
+    var input2 = new List<Bar> {
+        new Bar(1, 100), new Bar(2, 200), new Bar(2, 201), new Bar(4, 400)
     };
     InnerJoinWithLoop(input1, input2).Dump();
     InnerJoinWithLinq(input1, input2).Dump();
@@ -391,9 +395,9 @@ List<string> InnerJoinWithLoop(List<Foo> input1, List<Bar> input2) {
 
 IEnumerable<string> InnerJoinWithLinq(List<Foo> input1, List<Bar> input2) => input1
     .Join(
-        input2, 
-        f => f.Id, 
-        b => b.Id, 
+        input2,
+        f => f.Id,
+        b => b.Id,
         (f, b) => $"{f.Value}{b.Value}");
 
 class Foo {
@@ -413,16 +417,16 @@ class Bar {
 ## 10. Left join
 
 The left join is a bit more tricky to do with LINQ, because there is no inherent support for it.
-   
+
 Luckily we can use `GroupJoin()` to get an empty list for all the items from the left side that were not present in the right side. Calling `DefaultIfEmpty()` on the joined elements will return the joined items or the singleton list created from `default(Bar)` in case it was empty.
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
-        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C")
     };
-    var input2 = new List<Bar> { 
-        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
+    var input2 = new List<Bar> {
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400)
     };
     LeftJoinWithLoop(input1, input2).Dump();
     LeftJoinWithLinq(input1, input2).Dump();
@@ -441,9 +445,9 @@ List<string> LeftJoinWithLoop(List<Foo> input1, List<Bar> input2) {
 
 IEnumerable<string> LeftJoinWithLinq(List<Foo> input1, List<Bar> input2) => input1
     .GroupJoin(
-        input2, 
-        f => f.Id, 
-        b => b.Id, 
+        input2,
+        f => f.Id,
+        b => b.Id,
         (f, bs) => (f, bs))
     .SelectMany(
         x => x.bs.DefaultIfEmpty(),
@@ -455,15 +459,15 @@ The LINQ solution looks a bit hacky but should be extracted into a reusable exte
 <a name="11"></a>
 ## 11. Right join
 
-The right join works the same way as the left join only with the operands flipped. 
+The right join works the same way as the left join only with the operands flipped.
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
-        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C")
     };
-    var input2 = new List<Bar> { 
-        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
+    var input2 = new List<Bar> {
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400)
     };
     RightJoinWithLoop(input1, input2).Dump();
     RightJoinWithLinq(input1, input2).Dump();
@@ -482,9 +486,9 @@ List<string> RightJoinWithLoop(List<Foo> input1, List<Bar> input2) {
 
 IEnumerable<string> RightJoinWithLinq(List<Foo> input1, List<Bar> input2) => input2
     .GroupJoin(
-        input1, 
-        b => b.Id, 
-        f => f.Id, 
+        input1,
+        b => b.Id,
+        f => f.Id,
         (b, fs) => (b, fs))
     .SelectMany(
         x => x.fs.DefaultIfEmpty(),
@@ -499,16 +503,16 @@ The LINQ implementation should also be generalized to work on any `IEnumerable<T
 The full join is a beast. Period. Prepare for some serious head-scratching if you are ever faced with implementing it.
 
 The naïve solution involves doing both the left and right join and combining the results while duplicates are being discarded. This is how the loop solution works.
-   
+
 The LINQ solution (stolen from https://stackoverflow.com/a/13503860/1025555) is a bit more clever. It creates `Lookup`s first which offer constant-time lookup speed of the ids. It's still not exactly beautiful and should be hidden by generalizing it. MoreLINQ has a `FullJoin()` as well.
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
-        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C") 
+    var input1 = new List<Foo> {
+        new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C")
     };
-    var input2 = new List<Bar> { 
-        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400) 
+    var input2 = new List<Bar> {
+        new Bar(2, 200), new Bar(3, 300), new Bar(4, 400)
     };
     FullJoinWithLoop(input1, input2).Dump();
     FullJoinWithLinq(input1, input2).Dump();
@@ -535,7 +539,7 @@ IEnumerable<string> FullJoinWithLinq(List<Foo> input1, List<Bar> input2) {
     var lookup2 = input2.ToLookup(x => x.Id);
     var ids = new HashSet<int>(lookup1.Select(p => p.Key));
     ids.UnionWith(lookup2.Select(p => p.Key));
-    
+
     return ids
         .SelectMany(id => lookup1[id].DefaultIfEmpty(), (id, f) => (id, f))
         .SelectMany(x => lookup2[x.id].DefaultIfEmpty(), (x, b) => (x.f, b))
@@ -554,16 +558,16 @@ For instance, no client will come to you and request a plain inner join of `Foo`
 
 "Easy enough", might Sir Loopalot think and begin hacking a nested loop solution right away. And after sprinkling a couple of `if`s here and there it even works! Done.
 
-I say take a step back first. Think about the abstract nature of the problem. What kind of patterns are beneath the requirements? Can I split the process into several independent steps? What parts of my toolbox can I reuse? 
+I say take a step back first. Think about the abstract nature of the problem. What kind of patterns are beneath the requirements? Can I split the process into several independent steps? What parts of my toolbox can I reuse?
 
 Of course, most developers will consider those questions before starting to code. But LINQ actually enforces this kind of thinking. LINQ makes it harder for you to take shortcuts that sacrifice maintainability on the long run.
 
 ```C#
 void Main() {
-    var input1 = new List<Foo> { 
+    var input1 = new List<Foo> {
         new Foo(1, "A"), new Foo(2, "B"), new Foo(3, "C"), new Foo(4, "D")
     };
-    var input2 = new List<Bar> { 
+    var input2 = new List<Bar> {
         new Bar(1, 10), new Bar(2, 20.3), new Bar(3, 30.5), new Bar(4, 40)
     };
     ConditionalJoinWithLoop(input1, input2).Dump();
@@ -576,7 +580,7 @@ List<string> ConditionalJoinWithLoop(List<Foo> input1, List<Bar> input2) {
     foreach (var item1 in input1) {
         if (item1.Id % 2 != 0)
             continue;
-        
+
         foreach (var item2 in input2.FindAll(x => x.Id == item1.Id))
             if (item2.Value == Math.Floor(item2.Value))
                 result.Add($"{item1.Value}{item2.Value}");
@@ -599,7 +603,7 @@ Nethertheless I will show how to beautify the above solution in [example 17](#17
 <a name="14"></a>
 ## 14. Reduce
 
-Now we get to the mother of all LINQ operators. Quite Literally, because this operator could in fact be used to implement most of the operators I've shown you know so far. 
+Now we get to the mother of all LINQ operators. Quite Literally, because this operator could in fact be used to implement most of the operators I've shown you know so far.
 
 Enter `Aggregate()`. Probably the most dreaded LINQ operator there is, since it seems unwieldy and hard to wrap your head around. I know I had my problems at first.
 
@@ -628,7 +632,7 @@ int ReduceWithLinq(int[] input) => input
 <a name="15"></a>
 ## 15. Moving window
 
-What if operating on list elements independently is not sufficient? What if the element's neighbors need to be considered as well? 
+What if operating on list elements independently is not sufficient? What if the element's neighbors need to be considered as well?
 
 Truth is there is no nice way of doing this with LINQ. If you know you are dealing with `IList<T>`s then you can use the trick demonstrated below. But if your `IEnumerable<T>` does not have an indexer then `ElementAt()` will go through all the elements until it reaches the `i`th one and performance will suffer.
 
@@ -698,7 +702,7 @@ void Main() {
 
 public static class EnumerableExtensions {
     public static IEnumerable<T> Tap<T>(
-        this IEnumerable<T> source, Action<T> action) 
+        this IEnumerable<T> source, Action<T> action)
         => source.Select(x => { action(x); return x; });
 }
 ```
@@ -725,7 +729,7 @@ void Main() {
 }
 
 IEnumerable<string> ConditionalJoinWithLinq(
-    List<Foo> input1, List<Bar> input2) 
+    List<Foo> input1, List<Bar> input2)
     => input1
         .Where(f => f.Id % 2 == 0)
         .Join(input2, f => f.Id, b => b.Id, (f, b) => (f, b))
@@ -733,18 +737,18 @@ IEnumerable<string> ConditionalJoinWithLinq(
         .Select(x => $"{x.f.Value}{x.b.Value}");
 
 IEnumerable<string> ConditionalJoinWithBeautifulLinq(
-    List<Foo> input1, List<Bar> input2) 
+    List<Foo> input1, List<Bar> input2)
     => input1
         .EverySecondFoo()
         .JoinBars(input2.Where(IsInteger))
         .Select(x => $"{x.f.Value}{x.b.Value}");
 
 internal static class Extensions {
-    public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos) 
+    public static IEnumerable<Foo> EverySecondFoo(this IEnumerable<Foo> foos)
         => foos.Where(f => f.Id % 2 == 0);
 
     public static IEnumerable<(Foo f, Bar b)> JoinBars(
-        this IEnumerable<Foo> foos, IEnumerable<Bar> bars) 
+        this IEnumerable<Foo> foos, IEnumerable<Bar> bars)
         => foos.Join(bars, f => f.Id, b => b.Id, (f, b) => (f, b));
 }
 
@@ -756,7 +760,7 @@ Notice how we are using extensions methods in way that probably wasn't intended 
 <a name="18"></a>
 ## 18. Laziness
 
-What throws a lot of people off when starting with LINQ is it's laziness. Take the LINQ chain below for example. It increments each number in the array by one, squares them, and then prints them to the console using `Tap()`. But when you run the example in LINQPad nothing happens. There is no output whatsoever. Why is that? 
+What throws a lot of people off when starting with LINQ is it's laziness. Take the LINQ chain below for example. It increments each number in the array by one, squares them, and then prints them to the console using `Tap()`. But when you run the example in LINQPad nothing happens. There is no output whatsoever. Why is that?
 
 ```C#
 void Main() {
@@ -798,7 +802,7 @@ You might wonder now how an `IEnumerable` achieves this laziness. How can `Enume
 
 On the syntax level this is done with the `yield` keyword. It can only be used inside methods or properties that return an `IEnumerable`. When a value is requested from this member, its code will be run until the first `yield return <some value>` is hit. The value will be returned, the state of all local variables will be saved, and execution stops until the next value is requested. As soon as this happens, the local state will be restored and execution will be picked up after the `yield return` that was executed last.
 
-Still sounds like magic? Maybe so, but at least we now know how to write lazy methods ourselves. We will layer have a brief look at how C# actually implements this.
+Still sounds like magic? Maybe so, but at least we now know how to write lazy methods ourselves. We will later have a brief look at how C# actually implements this.
 
 Let's start by looking at the `Range()` method below. For simplicity we iterate over the result of `Range()` with regular `foreach` loop. I added some debug outputs so its easier to see which statement gets executed when. Notice how execution goes back and forth between the enumerator loop and the generator method. Also notice how such asynchronous producer/consumer scenarios usually had to be implemented with painful multi-threading and now all we need is this little word `yield` and an `IEnumerable` return type!
 
@@ -820,7 +824,7 @@ public IEnumerable<int> Range(int start, int end) {
 Now for something more glorious: the Fibonacci sequence! There is a minor problem though: the first two Fibonacci numbers are predefined and not part of our computation loop. How do we deal with this? Simple! Just yield them before the computation loop. Those two `yield return` statements will never be hit again, because exectution will always continue _after_ the `yield return` executed last.
 
 And yet another another problem: the Fibonacci sequence is infinite, but the range of `int` is not. And the numbers grow so fast that we cannot even get 50 values from our generator without getting overflown negative numbers. The solution is to only return those numbers we can accurately compute and stop the generator as soon as we overflow the `int` range. We do this by breaking the generator loop almost like we would break a regular loop. We only have to use `yield break` instead of `break`, because we are in an `IEnumerable` context.
-   
+
 ```C#
 public IEnumerable<int> FibonacciNumbers {
     get {
@@ -828,25 +832,25 @@ public IEnumerable<int> FibonacciNumbers {
         var previous = 1;
         yield return preprevious;
         yield return previous;
-        
+
         while (true) {
             var current = preprevious + previous;
-            
+
             if (current < 0) yield break;
-            
+
             yield return current;
             preprevious = previous;
-            previous = current;            
+            previous = current;
         }
     }
 }
 ```
 
 You might want to get fancy and define your collections with static data the same way the property `MyHobbies` does it. Although it looks a tiny bit cleaner compared to `new`ing an array, you still shouldn't do this. The reason is that the compiler generates a whole lot of code for each member that uses `yield`. Every such member essentially becomes its own class capable of halting and resuming execution while preserving local state (i.e. a state machine). You can see for yourself by opening a decompiled view of our LINQPad code with `Alt`+`Shift`+`R` (requires [ILSpy](https://github.com/icsharpcode/ILSpy/releases)) and navigating to the compiler-generated class `<get_MyHobbies>d__5`.
-   
+
 ```C#
 public IEnumerable<string> MyHobbies {
-    get { 
+    get {
         yield return "horses";
         yield return "flowers";
         yield return "guns";
@@ -861,14 +865,14 @@ Sooner or later after you started writing more LINQ chains you will have to debu
 
 You cannot set a break point on an operator and check how the input data as a whole has been transformed so far. All you can do is break inside an operator's lambda and check each item individually. So you will probably start splitting the LINQ chain into smaller chains writing to temporary lists in order to inspect the data there. This ends up in a tedious back and forth between changing the code and running the debugger until you find the bug. And after that you will have to change it all back again!
 
-I claim that it's not LINQ that is at fault here; it's your habits. Think about it: all a LINQ chain does is combine well-defined operators which are in itself almost quaranteed to work correctly. Typical off-by-one index errors cannot happen, because we don't maintain the indeces ourselves. State variables shouldn't be subject to unexpected changes, because ideally our LINQ chains work in an immutable fashion (i.e. they do not change items, but yield new ones instead).
+I claim that it's not LINQ that is at fault here; it's your habits. Think about it: all a LINQ chain does is combine well-defined operators which are in itself almost quaranteed to work correctly. Typical off-by-one index errors cannot happen, because we don't maintain the indices ourselves. State variables shouldn't be subject to unexpected changes, because ideally our LINQ chains work in an immutable fashion (i.e. they do not change items, but yield new ones instead).
 
 The bug will most likely be in our assumptions. Is the input data really shaped the way we think it is? Did we understand all the operators correctly? If we wrote a custom operator for our chain: is it covered by unit tests?
 
 In my experience you will spend a lot less time stepping through the code with a debbugger (which should always be a last resort anyway). Instead you will spend more time just looking at your chain and checking whether the operators are combined correctly.
 
 That being said: if you really have the need to see the complete data inside the `Enumerable` after an arbitrary step in you chain, you can use the `TapAll()` operator defined below. It's tap action does not take an individual item, but all items instead. Use it with a dummy action where you can place a break point (e.g. `TapAll(x => {; })`) to inspect the data inside the debug watch.
-   
+
 ```C#
 void Main() {
     new[] { 1, 2, 3 }
